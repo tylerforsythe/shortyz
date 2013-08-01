@@ -1,5 +1,6 @@
 package com.totsp.crossword.view;
 
+import android.annotation.TargetApi;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.ScaleGestureDetector.OnScaleGestureListener;
@@ -7,6 +8,7 @@ import android.view.ScaleGestureDetector.OnScaleGestureListener;
 import com.totsp.crossword.view.ScrollingImageView.AuxTouchHandler;
 
 
+@TargetApi(8)
 public class MultitouchHandler implements OnScaleGestureListener, AuxTouchHandler {
     private ScaleGestureDetector scaleDetector;
     private ScrollingImageView view;
@@ -21,7 +23,7 @@ public class MultitouchHandler implements OnScaleGestureListener, AuxTouchHandle
     }
 
     public boolean onScale(ScaleGestureDetector detector) {
-        view.zoom(detector.getScaleFactor(), (int) detector.getFocusX(), (int) detector.getFocusY());
+    	view.zoom(detector.getScaleFactor(), (int) detector.getFocusX(), (int) detector.getFocusY());
 
         return true;
     }
@@ -44,9 +46,6 @@ public class MultitouchHandler implements OnScaleGestureListener, AuxTouchHandle
         if (!result) {
             result = ev.getPointerCount() > 1;
         }
-
-        System.out.println("Result: " + result + " in progress " + scaleDetector.isInProgress());
-
         return result;
 
         //return scaleDetector.isInProgress();

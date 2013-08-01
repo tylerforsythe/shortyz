@@ -4,7 +4,7 @@
 body { background: black; height: 100%;}
 </style>
 <body>
-
+<div style="float:right; text-align: center; vertical-align: middle;">
 <form action="https://www.paypal.com/cgi-bin/webscr" method="get" target="_blank">
 <input type="hidden" name="cmd" value="_xclick">
 <input type="hidden" name="business" value="kebernet@gmail.com">
@@ -13,11 +13,65 @@ body { background: black; height: 100%;}
 <input type="hidden" name="currency_code" value="USD">
 <input type="hidden" name="tax" value="0">
 <input type="hidden" name="bn" value="PP-DonationsBF">
-<input style="float: right;" type="image" src="donate.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+<a href="https://plus.google.com/b/112662859624418565027" target="_blank"><img src="gplus-32.png" style="border: none; display:inline;" /></a>
+<br />
+<input style="display:inline; float:right;" type="image" src="donate.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
 </form>
-<a style="font-size:10px; float:right; clear:right; width:60px; text-align: center" href="#donations">Huh?</a>
+<a style="font-size:10px; float:right; width:60px; text-align: center" href="#donations">Huh?</a>
+</div>
+<h2> Shortyz 3.2.6 </h2>
 
-<h2>Shortz 3.2.1</h2>
+The quest to shake down this thing continues. Again, I am sorry for the continued problems.
+<ul>
+<li>The following of the cursor issue has been fixed. Sorry about that, I broke it trying to clean up
+UI issues in JellyBean.</li>
+<li>I think the flashing issue in Jelly Bean is *finally* gone. I haven't seen it at all with this build</li>
+<li>Max and min zoom limiting finally work as they should. Actually because of this, the cursor following
+actually works better now than it did before I broke it. :P</li>
+</ul>
+<p>
+Lastly, some of you have asked about the fit-to-screen on Honeycomb+. Honestly, the way it was working,
+where everyone with a HC+ device got a puzzle scale the first time they entered the play screen, was
+never my intent, but it got left in there with the Google TV code, and a lot of you became accustomed to
+it. Since most of these devices have larger screens anyway, it worked pretty well.
+</p><p>
+I haven't put it back as the default, but there is a preference you can set for it. 
+</p>
+
+Thanks
+
+<h3>Previously: 3.2.3</h3>
+
+<p>First of all, thanks for your patience. Long time users know that I am kind of scattershot on releases with new versions of Android.</p>
+
+<p>Seconds of all, I am sorry I can't get to everyone's emails anymore. Honestly, the emails that come in now that there are 
+400,000(!!!!) of you are overwhelming for one guy to get to. I try to triage them as best I can, but I just can't reply to 
+everyone anymore. I might suggest you <a href="https://plus.google.com/112662859624418565027/posts" target="_blank">circle Shortyz on Google+</a>. 
+I try to post the state there as often as I can.</p>
+
+<p>So some updates: I think I *finally* have the flicker issues in Jelly Bean worked out. Also, for
+people on "Large" format screens (read: 7" tablets, Google TV) the problem with using the "Native" keyboard option is sorted out,
+so you should be able to see the clues. Yes, I know that some of you don't like the clues below the puzzle, but I feel this is
+a better layout, and it will require some significant changes to make this an option. I will *try* to support using the 
+phone-style portrait layout on "large" screens again at some point in the future.</p>
+
+<p>Also, I have fixed the the Window Title issue on <=Gingerbread. Sorry about that. That was just an 
+oversight</p>
+
+<p>There are some more things coming. I wanted to get the two puzzle lists on tablets to sync properly, but 
+it turns out this is more complex than I thought. Also, now that I actually own two devices with NFC, I
+intend to support using Android Beam to move your puzzle state from your phone to your tablet and vice versa.
+Look for these soon.</p>
+
+<p>One last thing, because I don't want to shock people. Ben Tausig, the guy who makes the Inkwell and 
+Onion crosswords has asked me to help him set up a pay service for his puzzles, and I am going to oblige.
+These puzzle will still be available for free on the web, but Shortyz will require a subscription to keep 
+auto-downloading them. <b>I can assure you</b> the price Ben is wanting to charge is <b>incredibly reasonable</b>.
+I do Shortyz for fun, but Ben makes a living making crosswords. Shortyz has supported his puzzled to date because
+I don't make any money off of it, and Ben is a really nice guy. More on this to come, just a heads up.</p>
+
+
+<h3>Previously: 3.2.1</h3>
 
 <p>This release is mostly just cleanup for Google TV and JellyBean devices. If this doesn't affect you, you can ignore it.</p>
 <p>Google TV is hiding the ActionBar properly again. The Nexus 7 now uses the Google TV landscape view and the ICS 10" screen

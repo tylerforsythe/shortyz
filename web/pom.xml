@@ -1,3 +1,4 @@
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -219,31 +220,19 @@
         </dependency>
 
         <dependency>
-            <groupId>com.google.appengine.orm</groupId>
-            <artifactId>datanucleus-appengine</artifactId>
-            <version>1.0.6.final</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.datanucleus</groupId>
-            <artifactId>datanucleus-core</artifactId>
-            <version>1.1.5</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.transaction</groupId>
-                    <artifactId>transaction-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>datanucleus-jpa</artifactId>
             <version>1.1.5</version>
             <scope>runtime</scope>
         </dependency>
 
-        
+        <dependencies>
+            <dependency>
+                <groupId>com.googlecode.objectify</groupId>
+                <artifactId>objectify</artifactId>
+                <version>3.0</version>
+            </dependency>
+        </dependencies>
 
          
         <dependency>
@@ -252,7 +241,7 @@
             <version>${gae.version}</version>
         </dependency>
 
-         <dependency>
+        <dependency>
             <groupId>com.totsp.crossword</groupId>
             <artifactId>puzlib</artifactId>
             <version>1.0-SNAPSHOT</version>
@@ -297,89 +286,7 @@
                 </configuration>
             </plugin>
 
-            <plugin>
-                <groupId>org.datanucleus</groupId>
-                <artifactId>maven-datanucleus-plugin</artifactId>
-                <version>1.1.4</version>
-                <configuration>
-                    <!--
-                        Make sure this path contains your persistent
-                        classes!
-                    -->
-                    <mappingIncludes>**/server/model/*.class</mappingIncludes>
-                    <targetDirectory>target/classes</targetDirectory>
-                    <persistenceUnitName>transactions-optional</persistenceUnitName>
-                    <verbose>true</verbose>
-                    <enhancerName>ASM</enhancerName>
-                    <api>JPA</api>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>process-classes</phase>
-                        <goals>
-                            <goal>enhance</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.datanucleus</groupId>
-                        <artifactId>datanucleus-core</artifactId>
-                        <version>1.1.5</version>
-                        <exclusions>
-                            <exclusion>
-                                <groupId>javax.transaction</groupId>
-                                <artifactId>transaction-api</artifactId>
-                            </exclusion>
-                        </exclusions>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.datanucleus</groupId>
-                        <artifactId>datanucleus-rdbms</artifactId>
-                        <version>1.1.5</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.datanucleus</groupId>
-                        <artifactId>datanucleus-enhancer</artifactId>
-                        <version>1.1.4</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-
-             <!--plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>gwt-maven-plugin</artifactId>
-                <version>1.2</version>
-                <configuration>
-                    <logLevel>INFO</logLevel>
-
-                    <port>${gae.port}</port>
-
-                    <compileTargets>
-                        <value>net.kindleit.gae.example.Messages</value>
-                    </compileTargets>
-
-
-                    <extraJvmArgs>-Xmx512m</extraJvmArgs>
-                    <server>com.google.appengine.tools.development.gwt.AppEngineLauncher
-                    </server>
-
-                    <runTarget>/index.html</runTarget>
-                    <style>OBF</style>
-                    <webXml>war/WEB-INF/web.xml</webXml>
-
-                    <gwtVersion>${gwt.version}</gwtVersion>
-                </configuration>
-                <executions>
-
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin-->
+            
 
             <plugin>
                 <groupId>com.totsp.gwt</groupId>

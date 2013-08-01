@@ -97,6 +97,7 @@ public class PlayboardRenderer {
     }
 
     public void setScale(float scale) {
+    	System.out.println("SET SCALE "+scale);
         if (scale > 2.5f) {
             scale = 2.5f;
         } else if (scale < 0.5f) {
