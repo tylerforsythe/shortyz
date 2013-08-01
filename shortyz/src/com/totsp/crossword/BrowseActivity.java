@@ -177,11 +177,12 @@ public class BrowseActivity extends ShortyzActivity implements OnItemClickListen
         this.startActivity(i);
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getTitle()
                     .equals("Download")) {
-            showDialog(DOWNLOAD_DIALOG_ID);
+        	showDialog(DOWNLOAD_DIALOG_ID);
 
             return true;
         } else if (item.getTitle()
@@ -287,9 +288,9 @@ public class BrowseActivity extends ShortyzActivity implements OnItemClickListen
             this.startActivity(i);
 
             return;
-        } else if (prefs.getBoolean("release_3.2.1", true)) {
+        } else if (prefs.getBoolean("release_3.2.6", true)) {
             Editor e = prefs.edit();
-            e.putBoolean("release_3.2.1", false);
+            e.putBoolean("release_3.2.6", false);
             e.commit();
 
             Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("file:///android_asset/release.html"), this,
@@ -331,7 +332,8 @@ public class BrowseActivity extends ShortyzActivity implements OnItemClickListen
 
             Date d = new Date();
 
-            DownloadPickerDialogBuilder dpd = new DownloadPickerDialogBuilder(this, downloadButtonListener,
+            @SuppressWarnings("deprecation")
+			DownloadPickerDialogBuilder dpd = new DownloadPickerDialogBuilder(this, downloadButtonListener,
                     d.getYear() + 1900, d.getMonth(), d.getDate(),
                     new Provider<Downloaders>() {
                         public Downloaders get() {

@@ -30,9 +30,11 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -106,7 +108,7 @@ public class PlayActivity extends ShortyzActivity {
 	private long lastKey;
 	private long lastTap = 0;
 	private long resumedOn;
-
+	
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		this.configuration = newConfig;
@@ -149,13 +151,14 @@ public class PlayActivity extends ShortyzActivity {
 		
 		try {
 			if (!prefs.getBoolean("showTimer", false)) {
-				System.out.println("tabletish "+ShortyzApplication.isTabletish(metrics) );
 				if (ShortyzApplication.isLandscape(metrics))  {
 					if(ShortyzApplication.isMiniTabletish(metrics)){
 						utils.hideWindowTitle(this);
-					}
-					
+					}	
+				} else if(android.os.Build.VERSION.SDK_INT < 11){
+					utils.hideWindowTitle(this);
 				}
+				
 			} else {
 				requestWindowFeature(Window.FEATURE_PROGRESS);
 			}
@@ -216,7 +219,6 @@ public class PlayActivity extends ShortyzActivity {
 			}
 
 			RENDERER.setScale(scale);
-
 			BOARD.setSkipCompletedLetters(this.prefs.getBoolean("skipFilled",
 					false));
 
@@ -343,7 +345,8 @@ public class PlayActivity extends ShortyzActivity {
 			});
 
 			boardView = (ScrollingImageView) this.findViewById(R.id.board);
-
+			this.boardView.setCurrentScale(scale);
+			
 			this.registerForContextMenu(boardView);
 			boardView.setContextMenuListener(new ClickListener() {
 				public void onContextMenu(final Point e) {
@@ -368,13 +371,16 @@ public class PlayActivity extends ShortyzActivity {
 							System.out.println("Doubletap!");
 							if (fitToScreen) {
 								RENDERER.setScale(prefs.getFloat("scale", 1F));
+								boardView.setCurrentScale(1F);
 								BOARD.setHighlightLetter(RENDERER.findBox(e));
 								render();
 							} else {
 								int w = boardView.getWidth();
 								int h = boardView.getHeight();
-								RENDERER.fitTo((w < h) ? w : h);
-								render();
+								System.out.println("BOARD VIEW w "+w+" h "+h);
+								float scale =RENDERER.fitTo((w < h) ? w : h);
+								boardView.setCurrentScale(scale);
+								render(true);
 								boardView.scrollTo(0, 0);
 							}
 
@@ -418,14 +424,14 @@ public class PlayActivity extends ShortyzActivity {
 		revealPuzzleDialog.setTitle("Reveal Entire Puzzle");
 		revealPuzzleDialog.setMessage("Are you sure?");
 
-		revealPuzzleDialog.setButton("OK",
+		revealPuzzleDialog.setButton(AlertDialog.BUTTON_POSITIVE,"OK",
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						BOARD.revealPuzzle();
 						render();
 					}
 				});
-		revealPuzzleDialog.setButton2("Cancel",
+		revealPuzzleDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel",
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
@@ -451,14 +457,15 @@ public class PlayActivity extends ShortyzActivity {
 							public void run() {
 								int w = boardView.getImageView().getWidth();
 								int h = boardView.getImageView().getHeight();
+								float scale = RENDERER.fitTo((w < h) ? w : h);
 								prefs.edit()
 										.putFloat("scale",
-												RENDERER.fitTo((w < h) ? w : h))
+												scale)
 										.commit();
 								BOARD.setHighlightLetter(RENDERER
 										.findBox(center));
 
-								render(false);
+								render(true);
 							}
 						});
 					}
@@ -477,14 +484,15 @@ public class PlayActivity extends ShortyzActivity {
 		}
 
 		
-		this.render();
+		this.render(true);
 
 		this.across = (AdapterView) this.findViewById(R.id.acrossList);
 		this.down = (AdapterView) this.findViewById(R.id.downList);
-
+		boolean isGal = false;
 		if ((this.across == null) && (this.down == null)) {
 			this.across = (AdapterView) this.findViewById(R.id.acrossListGal);
 			this.down = (AdapterView) this.findViewById(R.id.downListGal);
+			isGal = true;
 		}
 
 		if ((across != null) && (down != null)) {
@@ -492,14 +500,17 @@ public class PlayActivity extends ShortyzActivity {
 					BOARD.getAcrossClues(), true));
 			down.setAdapter(this.downAdapter = new ClueListAdapter(this, BOARD
 					.getDownClues(), false));
-			across.setOnItemClickListener(new OnItemClickListener() {
-				public void onItemClick(AdapterView<?> arg0, View arg1,
-						int arg2, long arg3) {
-					arg0.setSelected(true);
-					BOARD.jumpTo(arg2, true);
-					render();
-				}
-			});
+			if(!isGal){
+				across.setOnItemClickListener(new OnItemClickListener() {
+					public void onItemClick(AdapterView<?> arg0, View arg1,
+							int arg2, long arg3) {
+						arg0.setSelected(true);
+						BOARD.jumpTo(arg2, true);
+						render();
+					}
+				});
+			} 
+			
 			across.setOnItemSelectedListener(new OnItemSelectedListener() {
 				public void onItemSelected(AdapterView<?> arg0, View arg1,
 						int arg2, long arg3) {
@@ -513,14 +524,17 @@ public class PlayActivity extends ShortyzActivity {
 				public void onNothingSelected(AdapterView<?> view) {
 				}
 			});
-			down.setOnItemClickListener(new OnItemClickListener() {
-				public void onItemClick(AdapterView<?> arg0, View arg1,
-						final int arg2, long arg3) {
-					BOARD.jumpTo(arg2, false);
-					render();
-				}
-			});
-
+			
+			if(!isGal){
+				down.setOnItemClickListener(new OnItemClickListener() {
+					public void onItemClick(AdapterView<?> arg0, View arg1,
+							final int arg2, long arg3) {
+						BOARD.jumpTo(arg2, false);
+						render();
+					}
+				});
+			}  
+			
 			down.setOnItemSelectedListener(new OnItemSelectedListener() {
 				public void onItemSelected(AdapterView<?> arg0, View arg1,
 						int arg2, long arg3) {
@@ -589,7 +603,7 @@ public class PlayActivity extends ShortyzActivity {
 		setTitle("Shortyz - " + puz.getTitle() + " - " + puz.getAuthor()
 				+ " - 	" + puz.getCopyright());
 		this.showCount = prefs.getBoolean("showCount", false);
-		if(android.os.Build.VERSION.SDK_INT > 11 && !ShortyzApplication.isTabletish(metrics)){
+		if(this.prefs.getBoolean("fitToScreen", false) || (android.os.Build.VERSION.SDK_INT > 11 && ShortyzApplication.isLandscape(metrics))){
 			this.handler.postDelayed(new Runnable(){
 
 				public void run() {
@@ -601,6 +615,7 @@ public class PlayActivity extends ShortyzActivity {
 						handler.postDelayed(this, 100);
 					}
 					float newScale = RENDERER.fitTo(v);
+					boardView.setCurrentScale(newScale);
 					System.out.println("SIZE "+v+" SCALE "+newScale);
 					
 					prefs.edit().putFloat("scale", newScale).commit();
@@ -797,6 +812,7 @@ public class PlayActivity extends ShortyzActivity {
 		return super.onKeyUp(keyCode, event);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		System.out.println(item.getTitle());
@@ -835,6 +851,7 @@ public class PlayActivity extends ShortyzActivity {
 			float newScale = RENDERER.zoomIn();
 			this.prefs.edit().putFloat("scale", newScale).commit();
 			this.fitToScreen = false;
+			boardView.setCurrentScale(newScale);
 			this.render();
 
 			return true;
@@ -844,6 +861,7 @@ public class PlayActivity extends ShortyzActivity {
 			float newScale = RENDERER.zoomOut();
 			this.prefs.edit().putFloat("scale", newScale).commit();
 			this.fitToScreen = false;
+			boardView.setCurrentScale(newScale);
 			this.render();
 
 			return true;
@@ -854,11 +872,13 @@ public class PlayActivity extends ShortyzActivity {
 					.getWidth() : this.boardView.getHeight();
 			float newScale = RENDERER.fitTo(v);
 			this.prefs.edit().putFloat("scale", newScale).commit();
+			boardView.setCurrentScale(newScale);
 			this.render();
 
 			return true;
 		} else if (item.getTitle().equals("Zoom Reset")) {
 			float newScale = RENDERER.zoomReset();
+			boardView.setCurrentScale(newScale);
 			this.prefs.edit().putFloat("scale", newScale).commit();
 			this.render();
 			this.boardView.scrollTo(0, 0);
@@ -1104,10 +1124,14 @@ public class PlayActivity extends ShortyzActivity {
 		}
 
 		Clue c = BOARD.getClue();
+		BOARD.toggleDirection();
+		Clue opposite = BOARD.getClue();
+		BOARD.toggleDirection();
 
 		if (c.hint == null) {
 			BOARD.toggleDirection();
 			c = BOARD.getClue();
+			opposite = null;
 		}
 
 		this.boardView.setBitmap(RENDERER.draw(previous), rescale);
@@ -1150,7 +1174,9 @@ public class PlayActivity extends ShortyzActivity {
 			}
 
 			// ensure the cursor is always on the screen.
+			System.out.println("Bottom Right" + cursorBottomRight);
 			this.boardView.ensureVisible(cursorBottomRight);
+			System.out.println("Top Left"+cursorTopLeft);
 			this.boardView.ensureVisible(cursorTopLeft);
 			
 		}
@@ -1229,6 +1255,6 @@ public class PlayActivity extends ShortyzActivity {
 			this.startActivity(i);
 
 		}
-		this.clue.requestFocus();
+		this.boardView.requestFocus();
 	}
 }

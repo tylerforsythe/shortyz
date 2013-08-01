@@ -110,7 +110,8 @@ public class DownloadPickerDialogBuilder {
         return mDialog;
     }
 
-    private Date getCurrentDate() {
+    @SuppressWarnings("deprecation")
+	private Date getCurrentDate() {
         return new Date(mYear - 1900, mMonthOfYear, mDayOfMonth);
     }
 

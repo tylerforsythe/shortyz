@@ -9,12 +9,12 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
-import android.widget.AbsoluteLayout;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 
 @SuppressWarnings("deprecation")
-public class ScrollingImageView extends AbsoluteLayout implements OnGestureListener {
+public class ScrollingImageView extends FrameLayout implements OnGestureListener {
     private static final Logger LOG = Logger.getLogger("com.totsp.crossword");
     private AuxTouchHandler aux = null;
     private ClickListener ctxListener;
@@ -27,12 +27,13 @@ public class ScrollingImageView extends AbsoluteLayout implements OnGestureListe
     private float maxScale = 2.5f;
     private float minScale = 0.25f;
     private float runningScale = 1.0f;
-
+    private boolean haveAdded = false;
     public ScrollingImageView(Context context, AttributeSet as) {
         super(context, as);
         gestureDetector = new GestureDetector(this);
         gestureDetector.setIsLongpressEnabled(true);
         imageView = new ImageView(context);
+        
 
         if (android.os.Build.VERSION.SDK_INT >= 8) {
             try {
@@ -63,16 +64,20 @@ public class ScrollingImageView extends AbsoluteLayout implements OnGestureListe
 
         LOG.finest("New Bitmap Size: " + bitmap.getWidth() + " x " + bitmap.getHeight());
 
-        if (rescale) {
-            if (imageView != null) {
-                this.removeView(imageView);
-            }
-
+        if (rescale){
+//            if (imageView != null) {
+//                this.removeView(imageView);
+//            }
+//            
+            
+        	FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(bitmap.getWidth(), bitmap.getHeight());
             imageView.setImageBitmap(bitmap);
-
-            AbsoluteLayout.LayoutParams params = new AbsoluteLayout.LayoutParams(bitmap.getWidth(), bitmap.getHeight(),
-                    0, 0);
-            this.addView(imageView, params);
+            if(!haveAdded){
+	            this.addView(imageView, params);
+	            haveAdded = true;
+            } else {
+            	imageView.setLayoutParams(params);
+            }
         } else {
             imageView.setImageBitmap(bitmap);
         }
@@ -113,6 +118,12 @@ public class ScrollingImageView extends AbsoluteLayout implements OnGestureListe
     public void setScaleListener(ScaleListener scaleListener) {
         this.scaleListener = scaleListener;
     }
+    
+    private float currentScale = 1.0f;
+    
+    public void setCurrentScale(float scale){
+    	this.currentScale = scale;
+    }
 
     public boolean isVisible(Point p) {
         int currentMinX = this.getScrollX();
@@ -139,6 +150,8 @@ public class ScrollingImageView extends AbsoluteLayout implements OnGestureListe
         int x = p.x;
         int maxScrollY = this.getMaxScrollY();
         ;
+        
+        
 
         int y = p.y;
 
@@ -147,17 +160,17 @@ public class ScrollingImageView extends AbsoluteLayout implements OnGestureListe
         int currentMinY = this.getScrollY();
         int currentMaxY = this.getHeight() + this.getScrollY();
 
-        LOG.finest("X range " + currentMinX + " to " + currentMaxX);
-        LOG.finest("Desired X:" + x);
-        LOG.finest("Y range " + currentMinY + " to " + currentMaxY);
-        LOG.finest("Desired Y:" + y);
+        LOG.info("X range " + currentMinX + " to " + currentMaxX);
+        LOG.info("Desired X:" + x);
+        LOG.info("Y range " + currentMinY + " to " + currentMaxY);
+        LOG.info("Desired Y:" + y);
 
         if ((x < currentMinX) || (x > currentMaxX)) {
             this.scrollTo((x > maxScrollX) ? maxScrollX : (x), this.getScrollY());
         }
 
         if ((y < currentMinY) || (y > currentMaxY)) {
-            LOG.finest("Y adjust");
+            LOG.info("Y adjust " + (y > maxScrollY ? maxScrollY : (y)));
             this.scrollTo(this.getScrollX(), (y > maxScrollY) ? maxScrollY : (y));
         }
     }
@@ -312,14 +325,23 @@ public class ScrollingImageView extends AbsoluteLayout implements OnGestureListe
         if ((runningScale * scale) > maxScale) {
             scale = 1.0F;
         }
-
+        System.out.println("CURRENT "+
+        		currentScale);
+        
+        if(scale * this.currentScale > 2.5 ){
+        	return;
+        } 
+        if(scale * this.currentScale < .5){
+        	return;
+        }
         int h = imageView.getHeight();
         int w = imageView.getWidth();
         h *= scale;
         w *= scale;
         runningScale *= scale;
+        currentScale *= scale;
         this.removeView(imageView);
-        this.addView(imageView, new AbsoluteLayout.LayoutParams(w, h, 0, 0));
+        this.addView(imageView, new FrameLayout.LayoutParams(w,h));
         this.scaleScrollLocation.fixScroll(w, h, false);
     }
 
@@ -378,6 +400,11 @@ public class ScrollingImageView extends AbsoluteLayout implements OnGestureListe
             double d = Math.sqrt(((double) this.x - (double) p.x) + ((double) this.y - (double) p.y));
 
             return (int) Math.round(d);
+        }
+        
+        @Override
+        public String toString(){
+        	return "["+x+", "+y+"]";
         }
     }
 
