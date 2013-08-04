@@ -42,7 +42,7 @@ public interface AndroidVersionUtils {
 			
 
 			try {
-				if(android.os.Build.VERSION.SDK_INT > 16){
+				if(android.os.Build.VERSION.SDK_INT >= 16){
 					return INSTANCE = (AndroidVersionUtils) Class.forName(
 							"com.totsp.crossword.versions.JellyBeanUtil")
 							.newInstance();

@@ -45,20 +45,20 @@
 			android:defaultValue="true"
 			android:summary="Also known as CrosSynergy"
 			android:key="downloadChron" /-->
-		<CheckBoxPreference
-			android:title="Joseph Crosswords"
-			android:defaultValue="true"
-			android:summary="Updates Monday-Saturday"
-			android:key="downloadJoseph" />
+<!-- 		<CheckBoxPreference -->
+<!-- 			android:title="Joseph Crosswords" -->
+<!-- 			android:defaultValue="true" -->
+<!-- 			android:summary="Updates Monday-Saturday" -->
+<!-- 			android:key="downloadJoseph" /> -->
 		<CheckBoxPreference
 			android:title="Los Angeles Times"
 			android:defaultValue="true"
 			android:key="downloadLat" />
-		<CheckBoxPreference
-			android:title="Sheffer Crosswords"
-			android:defaultValue="true"
-			android:summary="Updates Monday-Saturday"
-			android:key="downloadSheffer" />
+<!-- 		<CheckBoxPreference -->
+<!-- 			android:title="Sheffer Crosswords" -->
+<!-- 			android:defaultValue="true" -->
+<!-- 			android:summary="Updates Monday-Saturday" -->
+<!-- 			android:key="downloadSheffer" /> -->
 		<CheckBoxPreference
 			android:title="Thinks.com"
 			android:defaultValue="true"
@@ -331,9 +331,9 @@
 	 	android:title="License" 
 	 	android:key="license"/>
 	 	
-	 <Preference
-	 	android:title="Send Debug Package" 
-	 	android:key="sendDebug"/>
+<!-- 	 <Preference -->
+<!-- 	 	android:title="Send Debug Package"  -->
+<!-- 	 	android:key="sendDebug"/> -->
  	
 	</PreferenceCategory>
 </PreferenceScreen>

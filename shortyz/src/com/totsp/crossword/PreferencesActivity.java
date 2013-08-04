@@ -59,14 +59,14 @@ public class PreferencesActivity extends PreferenceActivity {
                 }
             });
         
-        Preference sendDebug = (Preference) findPreference("sendDebug");
-        sendDebug.setOnPreferenceClickListener(new OnPreferenceClickListener(){
-
-			public boolean onPreferenceClick(Preference preference) {
-				startActivity(ShortyzApplication.sendDebug());
-				return true;
-			}
-        	
-        });
+//        Preference sendDebug = (Preference) findPreference("sendDebug");
+//        sendDebug.setOnPreferenceClickListener(new OnPreferenceClickListener(){
+//
+//			public boolean onPreferenceClick(Preference preference) {
+//				startActivity(ShortyzApplication.sendDebug());
+//				return true;
+//			}
+//        	
+//        });
     }
 }

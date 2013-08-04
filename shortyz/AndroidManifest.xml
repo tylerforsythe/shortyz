@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     android:installLocation="auto"
     package="com.totsp.crossword.shortyz"
-    android:versionCode="30207"
-    android:versionName="3.2.7" >
+    android:versionCode="30210"
+    android:versionName="3.2.10" >
 	 <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
@@ -21,6 +21,8 @@
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIpupOi468PpFd3hXnN3o4Omx0Fgu9FyojG9lvzw" />
+        <meta-data android:name="com.google.android.gms.games.APP_ID"
+        	android:value="758655616714" />
 
         <activity
             android:label="Download to Shortyz"
