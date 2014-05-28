@@ -1,5 +1,9 @@
 package com.totsp.crossword.io;
 
+import com.totsp.crossword.io.charset.MacRoman;
+import com.totsp.crossword.puz.Box;
+import com.totsp.crossword.puz.Puzzle;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,11 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-
-
-import com.totsp.crossword.io.charset.MacRoman;
-import com.totsp.crossword.puz.Box;
-import com.totsp.crossword.puz.Puzzle;
 
 /**
  * Converts a puzzle from the plaintext format used by King Features Syndicate

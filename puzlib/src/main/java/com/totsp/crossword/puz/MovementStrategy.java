@@ -1,10 +1,10 @@
 package com.totsp.crossword.puz;
 
-import java.util.Arrays;
-
 import com.totsp.crossword.puz.Playboard.Position;
 import com.totsp.crossword.puz.Playboard.Word;
+
 import java.io.Serializable;
+import java.util.Arrays;
 
 public interface MovementStrategy extends Serializable {
 

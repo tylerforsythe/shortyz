@@ -1,5 +1,14 @@
 package com.totsp.crossword.io;
 
+import com.totsp.crossword.puz.Box;
+import com.totsp.crossword.puz.Puzzle;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
+
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -10,15 +19,6 @@ import java.util.Map;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.DefaultHandler;
-
-import com.totsp.crossword.puz.Box;
-import com.totsp.crossword.puz.Puzzle;
 
 /**
  * Converts a puzzle from the XML format used by uclick syndicated puzzles

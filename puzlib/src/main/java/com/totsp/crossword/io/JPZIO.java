@@ -1,5 +1,15 @@
 package com.totsp.crossword.io;
 
+
+import com.totsp.crossword.puz.Box;
+import com.totsp.crossword.puz.Puzzle;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
+
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -17,15 +27,6 @@ import java.util.zip.ZipInputStream;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.DefaultHandler;
-
-import com.totsp.crossword.puz.Box;
-import com.totsp.crossword.puz.Puzzle;
 
 /**
  * Converts a puzzle from the XML format used by JPZ puzzles into the Across
@@ -46,8 +47,7 @@ import com.totsp.crossword.puz.Puzzle;
  * </crossword-compiler-applet>
  */
 public class JPZIO {
-	private static String CHARSET_NAME = "utf8";
-
+	
 	public static int copyStream(InputStream sourceStream,
 			OutputStream destinationStream) throws IOException {
 		int bytesRead = 0;
@@ -156,15 +156,9 @@ public class JPZIO {
 		private Box[][] boxes;
 		private int[][] clueNums;
 		private boolean inAcross = false;
-		private boolean inAuthor = false;
-		private boolean inClue = false;
-		private boolean inClueTitle = false;
 		private boolean inClues = false;
-		private boolean inCopyright = false;
-		private boolean inDescription = false;
 		private boolean inDown = false;
 		private boolean inMetadata = false;
-		private boolean inTitle = false;
 		private int clueNumber = 0;
 		private int height;
 		private int maxClueNum = -1;
@@ -194,19 +188,15 @@ public class JPZIO {
 			} else if (inMetadata) {
 				if (name.equalsIgnoreCase("title")) {
 					puz.setTitle(curBuffer.toString());
-					inTitle = false;
 					curBuffer = null;
 				} else if (name.equalsIgnoreCase("creator")) {
 					puz.setAuthor(curBuffer.toString());
-					inAuthor = false;
 					curBuffer = null;
 				} else if (name.equalsIgnoreCase("copyright")) {
 					puz.setCopyright(curBuffer.toString());
-					inCopyright = false;
 					curBuffer = null;
 				} else if (name.equalsIgnoreCase("description")) {
 					puz.setNotes(curBuffer.toString());
-					inDescription = false;
 					curBuffer = null;
 				}
 			} else if (name.equalsIgnoreCase("grid")) {
@@ -228,7 +218,6 @@ public class JPZIO {
 								"Clue list is neither across nor down.");
 					}
 
-					inClueTitle = false;
 					curBuffer = null;
 				} else if (name.equalsIgnoreCase("clue")) {
 					if (inAcross) {
@@ -288,16 +277,12 @@ public class JPZIO {
 				inMetadata = true;
 			} else if (inMetadata) {
 				if (name.equalsIgnoreCase("title")) {
-					inTitle = true;
 					curBuffer = new StringBuilder();
 				} else if (name.equalsIgnoreCase("creator")) {
-					inAuthor = true;
 					curBuffer = new StringBuilder();
 				} else if (name.equalsIgnoreCase("copyright")) {
-					inCopyright = true;
 					curBuffer = new StringBuilder();
 				} else if (name.equalsIgnoreCase("description")) {
-					inDescription = true;
 					curBuffer = new StringBuilder();
 				}
 			} else if (name.equalsIgnoreCase("grid")) {
@@ -332,10 +317,8 @@ public class JPZIO {
 				inClues = true;
 			} else if (inClues) {
 				if (name.equalsIgnoreCase("title")) {
-					inClueTitle = true;
 					curBuffer = new StringBuilder();
 				} else if (name.equalsIgnoreCase("clue")) {
-					inClue = true;
 					clueNumber = Integer
 							.parseInt(attributes.getValue("number"));
 

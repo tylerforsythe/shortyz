@@ -1,10 +1,10 @@
 package com.totsp.crossword.puz;
 
+import com.totsp.crossword.puz.Playboard.Position;
+
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
-
-import com.totsp.crossword.puz.Playboard.Position;
-import java.io.Serializable;
 
 
 public class Puzzle implements Serializable{
@@ -244,7 +244,9 @@ public class Puzzle implements Serializable{
                 }
             }
         }
-
+        if(total == 0){
+            return 0;
+        }
         return (correct * 100) / (total);
     }
     
@@ -402,7 +404,7 @@ public class Puzzle implements Serializable{
             return false;
         }
 
-        if (getClass() != obj.getClass()) {
+        if (Puzzle.class != obj.getClass()) {
             return false;
         }
 

@@ -1,7 +1,6 @@
 package com.totsp.crossword.puz;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;

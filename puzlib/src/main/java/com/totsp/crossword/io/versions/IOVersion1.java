@@ -1,14 +1,14 @@
 package com.totsp.crossword.io.versions;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.Date;
-
 import com.totsp.crossword.io.IO;
 import com.totsp.crossword.puz.Box;
 import com.totsp.crossword.puz.Puzzle;
 import com.totsp.crossword.puz.PuzzleMeta;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.Date;
 
 public class IOVersion1 implements IOVersion {
 
