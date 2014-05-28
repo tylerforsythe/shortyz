@@ -26,7 +26,7 @@ android {
 
         release {
             storeFile file("C:\\Users\\keber_000\\Documents\\Code\\androidkeystore")
-            storePassword "gt0327a"
+            storePassword "CHANGEME"
             keyAlias "robert \"kebernet\" cooper"
             keyPassword "gt0327a"
         }
