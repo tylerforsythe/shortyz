@@ -20,7 +20,7 @@ android {
             storeFile file("C:\\Users\\keber_000\\Documents\\Code\\androidkeystore")
             storePassword "CHANGEME"
             keyAlias "robert \"kebernet\" cooper"
-            keyPassword "gt0327a"
+            keyPassword "CHANGEME"
 
         }
 
@@ -28,7 +28,7 @@ android {
             storeFile file("C:\\Users\\keber_000\\Documents\\Code\\androidkeystore")
             storePassword "CHANGEME"
             keyAlias "robert \"kebernet\" cooper"
-            keyPassword "gt0327a"
+            keyPassword "CHANGEME"
         }
     }
 
