@@ -1,15 +1,32 @@
+syntax: regexp
+^([^/]+/)+target$
 
 syntax: regexp
-^shortyz/bin$
+^[^/]+/proguard$
+
 syntax: regexp
-^puzlib/target$
+^[^/]+/gen$
+
 syntax: regexp
-^puzlib/target$
+.gradle$
+
 syntax: regexp
-^web/target$
+(^[^/]+/)?.*\.iml$
+
 syntax: regexp
-^test/bin$
-^.DS_Store
-^.*/build/
-^.*/.idea
-^.idea
+(^[^/]+/)?.idea$
+
+syntax: regexp
+^[^/]+/.gwt$
+
+syntax: regexp
+^[^/]+/build$
+
+syntax: regexp
+^[^/]+/bin$
+
+syntax: regexp
+^[^/]+/war/WEB-INF/appengine-generated
+
+syntax: regexp
+local.properties$
