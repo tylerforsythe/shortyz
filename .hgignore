@@ -8,7 +8,7 @@ syntax: regexp
 ^[^/]+/gen$
 
 syntax: regexp
-.gradle$
+^/.gradle$
 
 syntax: regexp
 (^[^/]+/)?.*\.iml$
