@@ -26,9 +26,9 @@ android {
 
         release {
             storeFile file("/Users/rcooper/androidkeystore")
-            storePassword "gt0327a"
+            storePassword "password"
             keyAlias "robert \"kebernet\" cooper"
-            keyPassword "gt0327a"
+            keyPassword "password"
         }
     }
 
