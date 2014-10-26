@@ -42,10 +42,10 @@ public class Downloaders {
 		if (prefs.getBoolean("downloadGlobe", true)) {
 			downloaders.add(new BostonGlobeDownloader());
 		}
-
-		if (prefs.getBoolean("downloadThinks", true)) {
-			downloaders.add(new ThinksDownloader());
-		}
+//
+//		if (prefs.getBoolean("downloadThinks", true)) {
+//			downloaders.add(new ThinksDownloader());
+//		}
 		if (prefs.getBoolean("downloadWaPo", true)) {
 		 downloaders.add(new WaPoDownloader());
 		 }

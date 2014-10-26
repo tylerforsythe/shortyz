@@ -59,10 +59,10 @@
 <!-- 			android:defaultValue="true" -->
 <!-- 			android:summary="Updates Monday-Saturday" -->
 <!-- 			android:key="downloadSheffer" /> -->
-		<CheckBoxPreference
-			android:title="Thinks.com"
-			android:defaultValue="true"
-			android:key="downloadThinks" />
+		<!--<CheckBoxPreference-->
+			<!--android:title="Thinks.com"-->
+			<!--android:defaultValue="true"-->
+			<!--android:key="downloadThinks" />-->
 		<CheckBoxPreference
 			android:title="Universal Crossword"
 			android:defaultValue="true"

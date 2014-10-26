@@ -10,6 +10,8 @@ syntax: regexp
 syntax: regexp
 ^/.gradle$
 
+^/.idea$
+
 syntax: regexp
 (^[^/]+/)?.*\.iml$
 

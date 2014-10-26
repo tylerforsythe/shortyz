@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.totsp.crossword.shortyz"
     android:installLocation="auto"
-    android:versionCode="30313"
-    android:versionName="3.3.13" >
+    android:versionCode="30314"
+    android:versionName="3.3.14">
 
     <supports-screens
         android:anyDensity="true"
@@ -18,17 +18,11 @@
         android:backupAgent="com.totsp.crossword.shortyz.BackupAgent"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:restoreAnyVersion="true" >
-        <meta-data
-            android:name="com.google.android.backup.api_key"
-            android:value="AEdPqrEAAAAIpupOi468PpFd3hXnN3o4Omx0Fgu9FyojG9lvzw" />
-        <meta-data
-            android:name="com.google.android.gms.games.APP_ID"
-            android:value="758655616714" />
+        android:restoreAnyVersion="true">
 
         <activity
             android:name="com.totsp.crossword.HttpDownloadActivity"
-            android:label="Download to Shortyz" >
+            android:label="Download to Shortyz">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -44,7 +38,7 @@
         <activity
             android:name="com.totsp.crossword.PlayActivity"
             android:hardwareAccelerated="false"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.EDIT" />
@@ -62,19 +56,16 @@
         </activity>
         <activity
             android:name="com.totsp.crossword.PreferencesActivity"
-            android:label="Settings" >
-        </activity>
+            android:label="Settings"></activity>
         <activity
             android:name="com.totsp.crossword.ClueListActivity"
-            android:label="Clues" >
-        </activity>
+            android:label="Clues"></activity>
         <activity
             android:name="com.totsp.crossword.HTMLActivity"
-            android:label="Shortyz" >
-        </activity>
+            android:label="Shortyz"></activity>
         <activity
             android:name="com.totsp.crossword.BrowseActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -84,15 +75,13 @@
         <activity
             android:name="com.totsp.crossword.WebBrowserActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="Browse for Puzzles" >
-        </activity>
+            android:label="Browse for Puzzles"></activity>
         <activity
             android:name="com.totsp.crossword.PuzzleFinishedActivity"
             android:label="Puzzle Completed!"
-            android:theme="@android:style/Theme.Dialog" >
-        </activity>
+            android:theme="@android:style/Theme.Dialog"></activity>
 
-        <receiver android:name="com.totsp.crossword.net.DownloadReceiver" >
+        <receiver android:name="com.totsp.crossword.net.DownloadReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
             </intent-filter>
@@ -100,15 +89,18 @@
 
         <activity
             android:name="com.totsp.crossword.GamesSignIn"
-            android:label="@string/title_activity_games_sign_in" >
-        </activity>
-        
-        
-        <meta-data android:name="com.google.android.gms.games.APP_ID"
-    			android:value="@string/app_id" />
-        <meta-data android:name="com.google.android.gms.version"
-                   android:value="@integer/google_play_services_version"/>
-        
+            android:label="@string/title_activity_games_sign_in"></activity>
+
+        <meta-data
+            android:name="com.google.android.backup.api_key"
+            android:value="AEdPqrEAAAAIpupOi468PpFd3hXnN3o4Omx0Fgu9FyojG9lvzw" />
+        <meta-data
+            android:name="com.google.android.gms.games.APP_ID"
+            android:value="@string/app_id" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
     </application>
 
     <uses-sdk

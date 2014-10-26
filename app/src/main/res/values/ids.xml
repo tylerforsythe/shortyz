@@ -1,6 +1,5 @@
 <resources>
 	<string name="app_id">758655616714</string>
-    <!--<integer name="google_play_services_version">4030530</integer>-->
     <string name="achievement_complete_a_puzzle">CgkIyo2Ym4oWEAIQAg</string>
     <string name="achievement_complete_ten_puzzles">CgkIyo2Ym4oWEAIQAw</string>
     <string name="achievement_complete_50_puzzles">CgkIyo2Ym4oWEAIQBA</string>

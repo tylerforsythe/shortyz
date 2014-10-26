@@ -30,11 +30,9 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -167,15 +165,6 @@ public class PlayActivity extends ShortyzActivity {
         }
         utils.holographic(this);
         utils.finishOnHomeButton(this);
-        if (!prefs.getBoolean("showTimer", false)) {
-            System.out.println("tabletish "+ShortyzApplication.isTabletish(metrics) );
-            if (ShortyzApplication.isLandscape(metrics))  {
-                if(ShortyzApplication.isMiniTabletish(metrics)){
-                    utils.hideActionBar(this);
-                }
-
-            }
-        }
 
         this.showErrors = this.prefs.getBoolean("showErrors", false);
         setDefaultKeyMode(Activity.DEFAULT_KEYS_DISABLE);
@@ -328,7 +317,7 @@ public class PlayActivity extends ShortyzActivity {
                     });
 
             this.clue = (TextView) this.findViewById(R.id.clueLine);
-            if (clue.getVisibility() != View.GONE
+            if (clue != null || clue.getVisibility() != View.GONE
                     && android.os.Build.VERSION.SDK_INT >= 14) {
                 clue.setVisibility(View.GONE);
                 clue = (TextView) utils.onActionBarCustom(this,
@@ -553,7 +542,6 @@ public class PlayActivity extends ShortyzActivity {
         }
         this.allClues = (ListView) this.findViewById(R.id.allClues);
         if (this.allClues != null) {
-            System.out.println("ALL CLUES");
             this.allCluesAdapter = new SeparatedListAdapter(this);
             this.allCluesAdapter.addSection(
                     "Across",
@@ -596,7 +584,13 @@ public class PlayActivity extends ShortyzActivity {
                 public void onNothingSelected(AdapterView<?> view) {
                 }
             });
-
+        }
+        if (!prefs.getBoolean("showTimer", false)) {
+            if (ShortyzApplication.isLandscape(metrics) )  {
+                if(ShortyzApplication.isMiniTabletish(metrics) && allClues != null){
+                    utils.hideActionBar(this);
+                }
+            }
         }
 
         this.setClueSize(prefs.getInt("clueSize", 12));
