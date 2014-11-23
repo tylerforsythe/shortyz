@@ -176,6 +176,17 @@ public class PlayActivity extends ShortyzActivity {
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
 
+        View.OnKeyListener onKeyListener = new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if(keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                    return PlayActivity.this.onKeyUp(i, keyEvent);
+                } else {
+                    return false;
+                }
+            }
+        };
+
         try {
             Uri u = this.getIntent().getData();
 
@@ -223,6 +234,8 @@ public class PlayActivity extends ShortyzActivity {
 
             setContentView(R.layout.play);
 
+
+
             int keyboardType = "CONDENSED_ARROWS".equals(prefs.getString(
                     "keyboardType", "")) ? R.xml.keyboard_dpad : R.xml.keyboard;
             Keyboard keyboard = new Keyboard(this, keyboardType);
@@ -234,7 +247,7 @@ public class PlayActivity extends ShortyzActivity {
             if (this.useNativeKeyboard) {
                 keyboardView.setVisibility(View.GONE);
             }
-
+            keyboardView.setOnKeyListener(onKeyListener);
             keyboardView
                     .setOnKeyboardActionListener(new OnKeyboardActionListener() {
                         private long lastSwipe = 0;
@@ -242,12 +255,12 @@ public class PlayActivity extends ShortyzActivity {
                         public void onKey(int primaryCode, int[] keyCodes) {
                             long eventTime = System.currentTimeMillis();
 
-                            if ((eventTime - lastSwipe) < 500) {
+                            if (keyboardView.getVisibility() == View.GONE || (eventTime - lastSwipe) < 500) {
                                 return;
                             }
 
                             KeyEvent event = new KeyEvent(eventTime, eventTime,
-                                    KeyEvent.ACTION_DOWN, primaryCode, 0, 0, 0,
+                                    KeyEvent.ACTION_UP, primaryCode, 0, 0, 0,
                                     0, KeyEvent.FLAG_SOFT_KEYBOARD
                                     | KeyEvent.FLAG_KEEP_TOUCH_MODE);
                             PlayActivity.this.onKeyUp(primaryCode, event);
@@ -317,8 +330,7 @@ public class PlayActivity extends ShortyzActivity {
                     });
 
             this.clue = (TextView) this.findViewById(R.id.clueLine);
-            if (clue != null || clue.getVisibility() != View.GONE
-                    && android.os.Build.VERSION.SDK_INT >= 14) {
+            if (clue != null && clue.getVisibility() != View.GONE) {
                 clue.setVisibility(View.GONE);
                 clue = (TextView) utils.onActionBarCustom(this,
                         R.layout.clue_line_only).findViewById(R.id.clueLine);
@@ -335,7 +347,8 @@ public class PlayActivity extends ShortyzActivity {
 
             boardView = (ScrollingImageView) this.findViewById(R.id.board);
             this.boardView.setCurrentScale(scale);
-
+            this.boardView.setFocusable(true);
+            //this.boardView.setOnKeyListener(onKeyListener);
             this.registerForContextMenu(boardView);
             boardView.setContextMenuListener(new ClickListener() {
                 public void onContextMenu(final Point e) {
@@ -426,7 +439,7 @@ public class PlayActivity extends ShortyzActivity {
                         dialog.dismiss();
                     }
                 });
-
+        this.boardView.setFocusable(true);
         this.boardView.setScaleListener(new ScaleListener() {
             TimerTask t;
             Timer renderTimer = new Timer();
@@ -539,6 +552,11 @@ public class PlayActivity extends ShortyzActivity {
             });
             down.scrollTo(0, 0);
             across.scrollTo(0, 0);
+
+            down.setOnKeyListener(onKeyListener);
+            across.setOnKeyListener(onKeyListener);
+            down.setFocusable(false);
+            across.setFocusable(false);
         }
         this.allClues = (ListView) this.findViewById(R.id.allClues);
         if (this.allClues != null) {
@@ -669,11 +687,33 @@ public class PlayActivity extends ShortyzActivity {
         }
 
         menu.add("Clues").setIcon(android.R.drawable.ic_menu_agenda);
+        Menu clueSize = menu.addSubMenu("Clue Text Size");
+        clueSize.add("Small");
+        clueSize.add("Medium");
+        clueSize.add("Large");
+        Menu zoom = menu.addSubMenu("Zoom");
+        zoom.add("Zoom In");
+
+        if (RENDERER.getScale() < RENDERER.getDeviceMaxScale())
+            zoom.add("Zoom In Max");
+
+        zoom.add("Zoom Out");
+        zoom.add("Fit to Screen");
+        zoom.add("Zoom Reset");
         menu.add("Info").setIcon(android.R.drawable.ic_menu_info_details);
         menu.add("Help").setIcon(android.R.drawable.ic_menu_help);
         menu.add("Settings").setIcon(android.R.drawable.ic_menu_preferences);
 
         return true;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_ENTER){
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -683,7 +723,7 @@ public class PlayActivity extends ShortyzActivity {
         if ((System.currentTimeMillis() - this.resumedOn) < 500) {
             return true;
         }
-
+        System.out.println("Key Code "+keyCode +" vs "+KeyEvent.KEYCODE_DPAD_UP);
         switch (keyCode) {
             case KeyEvent.KEYCODE_SEARCH:
                 System.out.println("Next clue.");
@@ -709,10 +749,10 @@ public class PlayActivity extends ShortyzActivity {
                     this.render(previous);
                 }
 
+
                 lastKey = System.currentTimeMillis();
 
                 return true;
-
             case KeyEvent.KEYCODE_DPAD_UP:
 
                 if ((System.currentTimeMillis() - lastKey) > 50) {
@@ -810,11 +850,19 @@ public class PlayActivity extends ShortyzActivity {
         return super.onKeyUp(keyCode, event);
     }
 
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        return onOptionsItemSelected(item);
+    }
+
     @SuppressWarnings("deprecation")
     @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+    public boolean onOptionsItemSelected (MenuItem item) {
         System.out.println(item.getTitle());
-
+        if(item.getTitle() == null){
+            finish();
+            return true;
+        }
         if (item.getTitle().equals("Letter")) {
             BOARD.revealLetter();
             this.render();
@@ -998,7 +1046,7 @@ public class PlayActivity extends ShortyzActivity {
 
         int keyboardType = "CONDENSED_ARROWS".equals(prefs.getString(
                 "keyboardType", "")) ? R.xml.keyboard_dpad : R.xml.keyboard;
-        Keyboard keyboard = new Keyboard(this, keyboardType);
+        final Keyboard keyboard = new Keyboard(this, keyboardType);
         keyboardView = (KeyboardView) this.findViewById(R.id.playKeyboard);
         keyboardView.setKeyboard(keyboard);
         this.useNativeKeyboard = "NATIVE".equals(prefs.getString(
@@ -1007,7 +1055,13 @@ public class PlayActivity extends ShortyzActivity {
         if (this.useNativeKeyboard) {
             keyboardView.setVisibility(View.GONE);
         }
-
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                keyboardView.invalidate();
+                keyboardView.invalidateAllKeys();
+            }
+        });
         this.showCount = prefs.getBoolean("showCount", false);
         this.onConfigurationChanged(this.configuration);
 
@@ -1133,13 +1187,11 @@ public class PlayActivity extends ShortyzActivity {
 
         Clue c = BOARD.getClue();
         BOARD.toggleDirection();
-        Clue opposite = BOARD.getClue();
         BOARD.toggleDirection();
 
         if (c.hint == null) {
             BOARD.toggleDirection();
             c = BOARD.getClue();
-            opposite = null;
         }
 
         this.boardView.setBitmap(RENDERER.draw(previous), rescale);
@@ -1182,9 +1234,9 @@ public class PlayActivity extends ShortyzActivity {
             }
 
             // ensure the cursor is always on the screen.
-            System.out.println("Bottom Right" + cursorBottomRight);
+            //System.out.println("Bottom Right" + cursorBottomRight);
             this.boardView.ensureVisible(cursorBottomRight);
-            System.out.println("Top Left"+cursorTopLeft);
+            //System.out.println("Top Left"+cursorTopLeft);
             this.boardView.ensureVisible(cursorTopLeft);
 
         }

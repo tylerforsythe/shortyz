@@ -43,8 +43,6 @@ public class VerticalProgressBar extends View {
     protected void onDraw(Canvas canvas) {
         Paint paint = new Paint();
         paint.setColor(GRAY);
-        paint.setStyle(Style.FILL);
-
         //System.out.println("Draw "+this.width + " " +this.height);
         if (this.percentComplete < 0) {
             paint.setColor(RED);

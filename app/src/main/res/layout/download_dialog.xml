@@ -2,17 +2,12 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
   android:id="@+id/download_root"
   android:layout_width="wrap_content"
-  android:layout_height="fill_parent">
+  android:layout_height="fill_parent"
+  android:background="@color/primary_material_light">
 	<LinearLayout
 	  android:layout_width="fill_parent"
 	  android:layout_height="wrap_content"
 	  android:orientation="vertical">
-	  	<TextView
-	  	  android:id="@+id/dateLabel"
-	  	  android:layout_width="wrap_content"
-	  	  android:layout_height="wrap_content"
-	  	  android:textSize="20sp"
-	  	  android:paddingLeft="10dip" />
 	  	<DatePicker
 	      android:id="@+id/datePicker"
 	      android:padding="5dip"
@@ -31,7 +26,7 @@
 		      android:layout_height="wrap_content"
 		      android:layout_weight="2"
 		      android:drawSelectorOnTop="true"
-		      android:prompt="@string/puzzle_select" />
+		      android:prompt="@string/puzzle_select"/>
 		    <Button
 		      android:id="@+id/browse"
 		      android:text="Online"

@@ -1,12 +1,12 @@
 apply plugin: 'android'
 
 android {
-    compileSdkVersion 11
+    compileSdkVersion 21
     buildToolsVersion '19.1.0'
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 11
+        targetSdkVersion 21
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_7
             targetCompatibility JavaVersion.VERSION_1_7
@@ -18,17 +18,17 @@ android {
     signingConfigs {
         debug {
             storeFile file("/Users/rcooper/androidkeystore")
-            storePassword "password"
+            storePassword "gt0327a"
             keyAlias "robert \"kebernet\" cooper"
-            keyPassword "password"
+            keyPassword "gt0327a"
 
         }
 
         release {
             storeFile file("/Users/rcooper/androidkeystore")
-            storePassword "password"
+            storePassword "gt0327a"
             keyAlias "robert \"kebernet\" cooper"
-            keyPassword "password"
+            keyPassword "gt0327a"
         }
     }
 
@@ -42,8 +42,10 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:+'
+    compile 'com.android.support:appcompat-v7:21.0.+'
     compile 'com.google.android.gms:play-services:4.0.30'
     compile project(":puzlib")
+    compile 'com.shamanland:fab:0.0.5'
+    compile 'com.github.traex.rippleeffect:library:1.2.2'
     androidTestCompile 'com.jayway.android.robotium:robotium-solo:4.3.1'
 }

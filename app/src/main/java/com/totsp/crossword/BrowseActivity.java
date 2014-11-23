@@ -18,16 +18,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +44,8 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.games.GamesClient;
+import com.shamanland.fab.FloatingActionButton;
+import com.shamanland.fab.ShowHideOnScroll;
 import com.totsp.crossword.io.IO;
 import com.totsp.crossword.net.Downloader;
 import com.totsp.crossword.net.Downloaders;
@@ -46,6 +54,7 @@ import com.totsp.crossword.puz.Puzzle;
 import com.totsp.crossword.puz.PuzzleMeta;
 import com.totsp.crossword.shortyz.R;
 import com.totsp.crossword.shortyz.ShortyzApplication;
+import com.totsp.crossword.view.CircleProgressBar;
 import com.totsp.crossword.view.SeparatedListAdapter;
 import com.totsp.crossword.view.VerticalProgressBar;
 
@@ -149,8 +158,6 @@ public class BrowseActivity extends ShortyzActivity implements OnItemClickListen
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         System.setProperty("http.keepAlive", "false");
-        utils.onActionBarWithText(menu.add("Download")
-                .setIcon(android.R.drawable.ic_menu_rotate));
         utils.onActionBarWithoutText(this.gamesItem = menu.add("Sign In")
                 .setIcon(this.playIcon));
         SubMenu sortMenu = menu.addSubMenu("Sort")
@@ -313,9 +320,9 @@ public class BrowseActivity extends ShortyzActivity implements OnItemClickListen
             this.startActivity(i);
 
             return;
-        } else if (prefs.getBoolean("release_3.3.14", true)) {
+        } else if (prefs.getBoolean("release_4.0.0", true)) {
             Editor e = prefs.edit();
-            e.putBoolean("release_3.3.14", false);
+            e.putBoolean("release_4.0.0", false);
             e.commit();
 
             Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("file:///android_asset/release.html"), this,
@@ -325,9 +332,22 @@ public class BrowseActivity extends ShortyzActivity implements OnItemClickListen
             return;
         }
 
+        FloatingActionButton download = (FloatingActionButton) this.findViewById(R.id.button_floating_action);
+        if(download != null) {
+            System.out.println("DOING FAB");
+            download.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    BrowseActivity.this.showDialog(DOWNLOAD_DIALOG_ID);
+                }
+            });
+            download.setImageBitmap(createBitmap("icons1.ttf", ","));
+            this.puzzleList.setOnTouchListener(new ShowHideOnScroll(download));
+        }
         render();
         this.checkDownload();
     }
+
 
     @Override
     protected Dialog onCreateDialog(int id) {
@@ -714,7 +734,7 @@ public class BrowseActivity extends ShortyzActivity implements OnItemClickListen
             return arg0;
         }
 
-        public View getView(int i, View view, ViewGroup group) {
+        public View getView(final int i, View view, ViewGroup group) {
             if (view == null) {
                 LayoutInflater inflater = (LayoutInflater) BrowseActivity.this.getApplicationContext()
                                                                               .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -737,7 +757,7 @@ public class BrowseActivity extends ShortyzActivity implements OnItemClickListen
 
             title.setText(puzFiles[i].getTitle());
 
-            VerticalProgressBar bar = (VerticalProgressBar) view.findViewById(R.id.puzzle_progress);
+            CircleProgressBar bar = (CircleProgressBar) view.findViewById(R.id.puzzle_progress);
 
             bar.setPercentComplete(puzFiles[i].getProgress());
 
@@ -745,6 +765,21 @@ public class BrowseActivity extends ShortyzActivity implements OnItemClickListen
 
             caption.setText(puzFiles[i].getCaption());
 
+            final View finalView = view;
+            view.setClickable(true);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("Click");
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            onItemClick(null, finalView, i, 0);
+                        }
+                    }, 450);
+
+                }
+            });
             return view;
         }
     }

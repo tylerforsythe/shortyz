@@ -6,13 +6,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.DownloadManager.Request;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
@@ -29,8 +30,8 @@ public class HoneycombUtil extends GingerbreadUtil {
 	}
 	
 	@Override
-    public void finishOnHomeButton(final Activity a) {
-		ActionBar bar = a.getActionBar();
+    public void finishOnHomeButton(final ActionBarActivity a) {
+		ActionBar bar = a.getSupportActionBar();
 		if(bar == null){
 			return;
 		}
@@ -43,18 +44,12 @@ public class HoneycombUtil extends GingerbreadUtil {
 	                }
 	            });
         }
-
     }
 
     @TargetApi(11)
 	@Override
-    public void holographic(Activity a) {
-        if(a instanceof PuzzleFinishedActivity){
-        	a.setTheme(android.R.style.Theme_Holo_Dialog);
-        } else {
-        	a.setTheme(android.R.style.Theme_Holo);
-        }
-        ActionBar bar = a.getActionBar();
+    public void holographic(ActionBarActivity a) {
+        ActionBar bar = a.getSupportActionBar();
         if (bar != null) {
             bar.setDisplayHomeAsUpEnabled(true);
         }
@@ -69,11 +64,11 @@ public class HoneycombUtil extends GingerbreadUtil {
         a.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM + MenuItem.SHOW_AS_ACTION_IF_ROOM);
     }
 
-    public void hideTitleOnPortrait(Activity a) {
+    public void hideTitleOnPortrait(ActionBarActivity a) {
         if(a.getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT){
             return;
         }
-        ActionBar bar = a.getActionBar();
+        ActionBar bar = a.getSupportActionBar();
         if (bar != null) {
             bar.setDisplayShowTitleEnabled(false);
         }
@@ -106,9 +101,9 @@ public class HoneycombUtil extends GingerbreadUtil {
             return false;
         }
     
-    public View onActionBarCustom(Activity a, int id) {
+    public View onActionBarCustom(ActionBarActivity a, int id) {
     	System.out.println("Setting custom ActionBar view");
-    	ActionBar bar = a.getActionBar();
+    	ActionBar bar = a.getSupportActionBar();
     	if(bar == null){
     		return null;
     	}
@@ -116,16 +111,15 @@ public class HoneycombUtil extends GingerbreadUtil {
     	bar.setDisplayShowTitleEnabled(false);
     	bar.setDisplayShowHomeEnabled(true);
     	bar.setCustomView(id);
-    	System.out.println(bar.getCustomView());
     	return bar.getCustomView();
 	}
     
-    public void hideWindowTitle(Activity a) {
+    public void hideWindowTitle(ActionBarActivity a) {
     	// no op;
     }
 
-	public void hideActionBar(Activity a) {
-		ActionBar ab = a.getActionBar();
+	public void hideActionBar(ActionBarActivity a) {
+		ActionBar ab = a.getSupportActionBar();
 		if(ab == null){
 			return;
 		}

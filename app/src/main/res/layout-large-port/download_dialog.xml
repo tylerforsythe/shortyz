@@ -7,13 +7,7 @@
 	  android:layout_width="fill_parent"
 	  android:layout_height="wrap_content"
 	  android:orientation="vertical">
-	  	<TextView
-	  	  android:id="@+id/dateLabel"
-	  	  android:layout_width="wrap_content"
-	  	  android:layout_height="wrap_content"
-	  	  android:textSize="20sp"
-	  	  android:paddingLeft="10dip" />
-	  	<DatePicker
+	  <DatePicker
 	      android:id="@+id/datePicker"
 	      android:padding="5dip"
 	      android:layout_gravity="center_horizontal"

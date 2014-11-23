@@ -7,6 +7,7 @@ import java.util.Map;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
+import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
@@ -22,9 +23,9 @@ public interface AndroidVersionUtils {
 	public boolean downloadFile(URL url, File destination,
 			Map<String, String> headers, boolean notification, String title);
 
-	public void finishOnHomeButton(Activity a);
+	public void finishOnHomeButton(ActionBarActivity a);
 
-	public void holographic(Activity playActivity);
+	public void holographic(ActionBarActivity playActivity);
 
 	public void onActionBarWithText(MenuItem a);
 
@@ -39,7 +40,7 @@ public interface AndroidVersionUtils {
 			}
 			System.out.println("Creating utils for version: "
 					+ android.os.Build.VERSION.SDK_INT);
-			
+
 
 			try {
 				if(android.os.Build.VERSION.SDK_INT >= 16){
@@ -58,7 +59,7 @@ public interface AndroidVersionUtils {
 				case 13:
 				case 14:
 				case 15:
-				
+
 					return INSTANCE = (AndroidVersionUtils) Class.forName(
 							"com.totsp.crossword.versions.HoneycombUtil")
 							.newInstance();
@@ -71,15 +72,15 @@ public interface AndroidVersionUtils {
 		}
 	}
 
-	public View onActionBarCustom(Activity a, int id);
+	public View onActionBarCustom(ActionBarActivity a, int id);
 	
-	public void hideWindowTitle(Activity a);
+	public void hideWindowTitle(ActionBarActivity a);
 	
-	public void hideActionBar(Activity a);
+	public void hideActionBar(ActionBarActivity a);
 
     public void onActionBarWithoutText(MenuItem a);
 
-    public void hideTitleOnPortrait(Activity a);
+    public void hideTitleOnPortrait(ActionBarActivity a);
 
 	
 }

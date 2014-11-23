@@ -20,8 +20,10 @@ import com.totsp.crossword.shortyz.ShortyzApplication;
 
 
 public class ClueListAdapter extends BaseAdapter {
-    private static final int transparent = Color.TRANSPARENT;
-    private static final int highlight = Color.argb(100, 200, 191, 231);
+    private final int defaultBackground;
+    private final int highlight;
+    private final int highlightLine;
+    private final int normalLineText;
     public int textSize = 14;
     private Clue highlightClue;
     private Context context;
@@ -34,6 +36,10 @@ public class ClueListAdapter extends BaseAdapter {
         this.clues = clues;
         this.context = context;
         this.across = across;
+        this.highlight = context.getResources().getColor(R.color.accent);
+        this.highlightLine = context.getResources().getColor(R.color.accentText);
+        this.normalLineText = context.getResources().getColor(R.color.textColorPrimary);
+        this.defaultBackground = context.getResources().getColor(R.color.background_material_light);
     }
 
     public void setActiveDirection(boolean isActive) {
@@ -95,8 +101,10 @@ public class ClueListAdapter extends BaseAdapter {
 
         if (this.isActive && c.equals(this.highlightClue)) {
             view.setBackgroundColor(highlight);
+            line.setTextColor(highlightLine);
         } else {
-            view.setBackgroundColor(transparent);
+            view.setBackgroundColor(defaultBackground);
+            line.setTextColor(normalLineText);
         }
 
         return view;

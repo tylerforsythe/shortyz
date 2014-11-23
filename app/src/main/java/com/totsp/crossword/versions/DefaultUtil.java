@@ -16,6 +16,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
+import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
@@ -64,36 +65,35 @@ public class DefaultUtil implements AndroidVersionUtils {
 		
 	}
 
-	public void finishOnHomeButton(Activity a) {
-		// TODO Auto-generated method stub
+	public void finishOnHomeButton(ActionBarActivity a) {
+		// no op
 	}
 
-	public void holographic(Activity playActivity) {
-		// TODO Auto-generated method stub
+	public void holographic(ActionBarActivity playActivity) {
+		// no op
 	}
 
 	public void onActionBarWithText(MenuItem a) {
-		// TODO Auto-generated method stub
+		// no op
 	}
 
 	public void onActionBarWithText(SubMenu reveal) {
-		// TODO Auto-generated method stub
+		// no op
 	}
 
 	public void storeMetas(Uri uri, PuzzleMeta meta) {
-		// TODO Auto-generated method stub
-
+		// no op
 	}
 
-	public View onActionBarCustom(Activity a, int id) {
+	public View onActionBarCustom(ActionBarActivity a, int id) {
 		return null;
 	}
 
-	public void hideWindowTitle(Activity a) {
+	public void hideWindowTitle(ActionBarActivity a) {
 		a.requestWindowFeature(Window.FEATURE_NO_TITLE);
 	}
 
-	public void hideActionBar(Activity a) {
+	public void hideActionBar(ActionBarActivity a) {
 		; //no op;
 	}
 
@@ -101,7 +101,7 @@ public class DefaultUtil implements AndroidVersionUtils {
         ; //no op;
     }
 
-    public void hideTitleOnPortrait(Activity a) {
+    public void hideTitleOnPortrait(ActionBarActivity a) {
         ; //no op;
     }
 }

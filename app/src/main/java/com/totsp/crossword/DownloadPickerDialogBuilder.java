@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,6 @@ import com.totsp.crossword.shortyz.R;
  * Custom dialog for choosing puzzles to download.
  */
 public class DownloadPickerDialogBuilder {
-    private static DateFormat df = new SimpleDateFormat("EEEE");
     private Activity mActivity;
     private Dialog mDialog;
     private List<Downloader> mAvailableDownloaders;
@@ -43,14 +43,12 @@ public class DownloadPickerDialogBuilder {
                 mYear = year;
                 mMonthOfYear = monthOfYear;
                 mDayOfMonth = dayOfMonth;
-                updateDateLabel();
                 updatePuzzleSelect();
             }
         };
 
     private Provider<Downloaders> mDownloaders;
     private Spinner mPuzzleSelect;
-    private TextView mDateLabel;
     private int mDayOfMonth;
     private int mMonthOfYear;
     private int mYear;
@@ -68,8 +66,6 @@ public class DownloadPickerDialogBuilder {
         LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.download_dialog, (ViewGroup) mActivity.findViewById(R.id.download_root));
 
-        mDateLabel = (TextView) layout.findViewById(R.id.dateLabel);
-        updateDateLabel();
 
         DatePicker datePicker = (DatePicker) layout.findViewById(R.id.datePicker);
         datePicker.init(year, monthOfYear, dayOfMonth, dateChangedListener);
@@ -92,15 +88,13 @@ public class DownloadPickerDialogBuilder {
                 }
             });
 
-        AlertDialog.Builder builder = (new AlertDialog.Builder(mActivity)).setPositiveButton("Download", clickHandler)
-                                       .setNegativeButton("Cancel", null)
-                                       .setTitle("Download Puzzles");
+        AlertDialog.Builder builder = (new AlertDialog.Builder(new ContextThemeWrapper(mActivity, R.style.Theme_Shortyz))).setPositiveButton("Download", clickHandler)
+                                       .setNegativeButton("Cancel", null);
 
         builder.setView(layout);
         mDialog = builder.create();
         mDialog.setOnShowListener(new OnShowListener() {
                 public void onShow(DialogInterface arg0) {
-                    updateDateLabel();
                     updatePuzzleSelect();
                 }
             });
@@ -115,9 +109,6 @@ public class DownloadPickerDialogBuilder {
         return new Date(mYear - 1900, mMonthOfYear, mDayOfMonth);
     }
 
-    private void updateDateLabel() {
-        mDateLabel.setText(df.format(getCurrentDate()));
-    }
 
     private void updatePuzzleSelect() {
         mAvailableDownloaders = mDownloaders.get()

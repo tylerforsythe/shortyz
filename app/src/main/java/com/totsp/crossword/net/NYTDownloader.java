@@ -88,7 +88,6 @@ public class NYTDownloader extends AbstractDownloader {
 	}
 
 	public File download(Date date) {
-		// Feb2310.puz
 		return this.download(date, this.createUrlSuffix(date));
 	}
 
