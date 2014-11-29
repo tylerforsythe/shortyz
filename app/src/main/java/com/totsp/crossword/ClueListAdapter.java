@@ -1,5 +1,6 @@
 package com.totsp.crossword;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -19,7 +21,7 @@ import com.totsp.crossword.shortyz.R;
 import com.totsp.crossword.shortyz.ShortyzApplication;
 
 
-public class ClueListAdapter extends BaseAdapter {
+public class ClueListAdapter extends ArrayAdapter {
     private final int defaultBackground;
     private final int highlight;
     private final int highlightLine;
@@ -33,6 +35,7 @@ public class ClueListAdapter extends BaseAdapter {
     private boolean isActive = false;
 
     public ClueListAdapter(Context context, Clue[] clues, boolean across) {
+        super(context, R.layout.clue_detail_item, R.id.clueLine, clues);
         this.clues = clues;
         this.context = context;
         this.across = across;
@@ -40,7 +43,10 @@ public class ClueListAdapter extends BaseAdapter {
         this.highlightLine = context.getResources().getColor(R.color.accentText);
         this.normalLineText = context.getResources().getColor(R.color.textColorPrimary);
         this.defaultBackground = context.getResources().getColor(R.color.background_material_light);
+
     }
+
+
 
     public void setActiveDirection(boolean isActive) {
         this.isActive = isActive;

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.andexert.library.RippleView
+<com.totsp.crossword.view.DelegatingRippleView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/more"
     android:layout_width="fill_parent"
     android:layout_height="72dp"
     android:layout_margin="0dp"
+    android:background="@color/background_material_light"
     app:rv_rippleDuration="250"
     app:rv_color="@color/primary_dark">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,8 +15,8 @@
 
     <com.totsp.crossword.view.CircleProgressBar
         android:id="@+id/puzzle_progress"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="8dp"
@@ -86,4 +87,5 @@ Jan 2, 2001"
             /-->
     </LinearLayout>
 </RelativeLayout>
-    </com.andexert.library.RippleView>
+
+    </com.totsp.crossword.view.DelegatingRippleView>

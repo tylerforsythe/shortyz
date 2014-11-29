@@ -29,8 +29,6 @@ public class MultitouchHandler implements OnScaleGestureListener, AuxTouchHandle
     }
 
     public boolean onScaleBegin(ScaleGestureDetector detector) {
-        System.out.println("Begin");
-
         return true;
     }
 

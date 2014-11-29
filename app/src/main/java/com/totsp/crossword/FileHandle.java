@@ -47,4 +47,9 @@ public class FileHandle implements Comparable<FileHandle> {
         ? file.getName()
               .substring(0, file.getName().lastIndexOf(".")) : meta.source;
     }
+
+    @Override
+    public String toString(){
+        return file.getAbsolutePath();
+    }
 }

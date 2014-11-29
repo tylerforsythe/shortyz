@@ -17,17 +17,25 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.XmlResourceParser;
+import android.graphics.Color;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.InflateException;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -137,8 +145,10 @@ public class PlayActivity extends ShortyzActivity {
 
     DisplayMetrics metrics;
 
-    /** Called when the activity is first created. */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    /**
+     * Called when the activity is first created.
+     */
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,11 +159,11 @@ public class PlayActivity extends ShortyzActivity {
 
         try {
             if (!prefs.getBoolean("showTimer", false)) {
-                if (ShortyzApplication.isLandscape(metrics))  {
-                    if(ShortyzApplication.isMiniTabletish(metrics)){
+                if (ShortyzApplication.isLandscape(metrics)) {
+                    if (ShortyzApplication.isMiniTabletish(metrics)) {
                         utils.hideWindowTitle(this);
                     }
-                } else if(android.os.Build.VERSION.SDK_INT < 11){
+                } else if (android.os.Build.VERSION.SDK_INT < 11) {
                     utils.hideWindowTitle(this);
                 }
 
@@ -179,7 +189,7 @@ public class PlayActivity extends ShortyzActivity {
         View.OnKeyListener onKeyListener = new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if(keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                if (keyEvent.getAction() == KeyEvent.ACTION_UP) {
                     return PlayActivity.this.onKeyUp(i, keyEvent);
                 } else {
                     return false;
@@ -233,7 +243,6 @@ public class PlayActivity extends ShortyzActivity {
             }
 
             setContentView(R.layout.play);
-
 
 
             int keyboardType = "CONDENSED_ARROWS".equals(prefs.getString(
@@ -370,7 +379,6 @@ public class PlayActivity extends ShortyzActivity {
                     try {
                         if (prefs.getBoolean("doubleTap", false)
                                 && ((System.currentTimeMillis() - lastTap) < 300)) {
-                            System.out.println("Doubletap!");
                             if (fitToScreen) {
                                 RENDERER.setScale(prefs.getFloat("scale", 1F));
                                 boardView.setCurrentScale(1F);
@@ -379,8 +387,7 @@ public class PlayActivity extends ShortyzActivity {
                             } else {
                                 int w = boardView.getWidth();
                                 int h = boardView.getHeight();
-                                System.out.println("BOARD VIEW w "+w+" h "+h);
-                                float scale =RENDERER.fitTo((w < h) ? w : h);
+                                float scale = RENDERER.fitTo((w < h) ? w : h);
                                 boardView.setCurrentScale(scale);
                                 render(true);
                                 boardView.scrollTo(0, 0);
@@ -426,7 +433,7 @@ public class PlayActivity extends ShortyzActivity {
         revealPuzzleDialog.setTitle("Reveal Entire Puzzle");
         revealPuzzleDialog.setMessage("Are you sure?");
 
-        revealPuzzleDialog.setButton(AlertDialog.BUTTON_POSITIVE,"OK",
+        revealPuzzleDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         BOARD.revealPuzzle();
@@ -502,7 +509,7 @@ public class PlayActivity extends ShortyzActivity {
                     BOARD.getAcrossClues(), true));
             down.setAdapter(this.downAdapter = new ClueListAdapter(this, BOARD
                     .getDownClues(), false));
-            if(!isGal){
+            if (!isGal) {
                 across.setOnItemClickListener(new OnItemClickListener() {
                     public void onItemClick(AdapterView<?> arg0, View arg1,
                                             int arg2, long arg3) {
@@ -527,7 +534,7 @@ public class PlayActivity extends ShortyzActivity {
                 }
             });
 
-            if(!isGal){
+            if (!isGal) {
                 down.setOnItemClickListener(new OnItemClickListener() {
                     public void onItemClick(AdapterView<?> arg0, View arg1,
                                             final int arg2, long arg3) {
@@ -574,9 +581,9 @@ public class PlayActivity extends ShortyzActivity {
             allClues.setOnItemClickListener(new OnItemClickListener() {
                 public void onItemClick(AdapterView<?> arg0, View arg1,
                                         int clickIndex, long arg3) {
-                    boolean across = clickIndex <= BOARD.getAcrossClues().length +1;
-                    int index = clickIndex -1;
-                    if(index > BOARD.getAcrossClues().length ){
+                    boolean across = clickIndex <= BOARD.getAcrossClues().length + 1;
+                    int index = clickIndex - 1;
+                    if (index > BOARD.getAcrossClues().length) {
                         index = index - BOARD.getAcrossClues().length - 1;
                     }
                     arg0.setSelected(true);
@@ -587,12 +594,12 @@ public class PlayActivity extends ShortyzActivity {
             allClues.setOnItemSelectedListener(new OnItemSelectedListener() {
                 public void onItemSelected(AdapterView<?> arg0, View arg1,
                                            int clickIndex, long arg3) {
-                    boolean across = clickIndex <= BOARD.getAcrossClues().length +1;
-                    int index = clickIndex -1;
-                    if(index > BOARD.getAcrossClues().length ){
+                    boolean across = clickIndex <= BOARD.getAcrossClues().length + 1;
+                    int index = clickIndex - 1;
+                    if (index > BOARD.getAcrossClues().length) {
                         index = index - BOARD.getAcrossClues().length - 1;
                     }
-                    if(!BOARD.isAcross() == across && BOARD.getCurrentClueIndex() != index){
+                    if (!BOARD.isAcross() == across && BOARD.getCurrentClueIndex() != index) {
                         arg0.setSelected(true);
                         BOARD.jumpTo(index, across);
                         render();
@@ -604,8 +611,8 @@ public class PlayActivity extends ShortyzActivity {
             });
         }
         if (!prefs.getBoolean("showTimer", false)) {
-            if (ShortyzApplication.isLandscape(metrics) )  {
-                if(ShortyzApplication.isMiniTabletish(metrics) && allClues != null){
+            if (ShortyzApplication.isLandscape(metrics)) {
+                if (ShortyzApplication.isMiniTabletish(metrics) && allClues != null) {
                     utils.hideActionBar(this);
                 }
             }
@@ -615,20 +622,19 @@ public class PlayActivity extends ShortyzActivity {
         setTitle("Shortyz - " + puz.getTitle() + " - " + puz.getAuthor()
                 + " - 	" + puz.getCopyright());
         this.showCount = prefs.getBoolean("showCount", false);
-        if(this.prefs.getBoolean("fitToScreen", false) || (android.os.Build.VERSION.SDK_INT > 11 && ShortyzApplication.isLandscape(metrics)) && (ShortyzApplication.isTabletish(metrics) || ShortyzApplication.isMiniTabletish(metrics))){
-            this.handler.postDelayed(new Runnable(){
+        if (this.prefs.getBoolean("fitToScreen", false) || (android.os.Build.VERSION.SDK_INT > 11 && ShortyzApplication.isLandscape(metrics)) && (ShortyzApplication.isTabletish(metrics) || ShortyzApplication.isMiniTabletish(metrics))) {
+            this.handler.postDelayed(new Runnable() {
 
                 public void run() {
                     boardView.scrollTo(0, 0);
 
                     int v = (boardView.getWidth() < boardView.getHeight()) ? boardView
                             .getWidth() : boardView.getHeight();
-                    if( v == 0){
+                    if (v == 0) {
                         handler.postDelayed(this, 100);
                     }
                     float newScale = RENDERER.fitTo(v);
                     boardView.setCurrentScale(newScale);
-                    System.out.println("SIZE "+v+" SCALE "+newScale);
 
                     prefs.edit().putFloat("scale", newScale).commit();
                     render();
@@ -644,21 +650,21 @@ public class PlayActivity extends ShortyzActivity {
     public void onCreateContextMenu(ContextMenu menu, View view,
                                     ContextMenuInfo info) {
         // System.out.println("CCM " + view);
-        if (view == boardView) {
-            Menu clueSize = menu.addSubMenu("Clue Text Size");
-            clueSize.add("Small");
-            clueSize.add("Medium");
-            clueSize.add("Large");
-
-            menu.add("Zoom In");
-
-            if (RENDERER.getScale() < RENDERER.getDeviceMaxScale())
-                menu.add("Zoom In Max");
-
-            menu.add("Zoom Out");
-            menu.add("Fit to Screen");
-            menu.add("Zoom Reset");
-        }
+//        if (view == boardView) {
+//            Menu clueSize = menu.addSubMenu("Clue Text Size");
+//            clueSize.add("Small");
+//            clueSize.add("Medium");
+//            clueSize.add("Large");
+//
+//            menu.add("Zoom In");
+//
+//            if (RENDERER.getScale() < RENDERER.getDeviceMaxScale())
+//                menu.add("Zoom In Max");
+//
+//            menu.add("Zoom Out");
+//            menu.add("Fit to Screen");
+//            menu.add("Zoom Reset");
+//        }
     }
 
     @Override
@@ -673,9 +679,9 @@ public class PlayActivity extends ShortyzActivity {
 
             SubMenu reveal = menu.addSubMenu("Reveal").setIcon(
                     android.R.drawable.ic_menu_view);
-            reveal.add("Letter");
-            reveal.add("Word");
-            reveal.add("Puzzle");
+            reveal.add(createSpannableForMenu("Letter")).setTitleCondensed("Letter");
+            reveal.add(createSpannableForMenu("Word")).setTitleCondensed("Word");
+            reveal.add(createSpannableForMenu("Puzzle")).setTitleCondensed("Puzzle");
             if (ShortyzApplication.isTabletish(metrics)) {
                 utils.onActionBarWithText(reveal);
             }
@@ -688,18 +694,18 @@ public class PlayActivity extends ShortyzActivity {
 
         menu.add("Clues").setIcon(android.R.drawable.ic_menu_agenda);
         Menu clueSize = menu.addSubMenu("Clue Text Size");
-        clueSize.add("Small");
-        clueSize.add("Medium");
-        clueSize.add("Large");
+        clueSize.add(createSpannableForMenu("Small")).setTitleCondensed("Small");
+        clueSize.add(createSpannableForMenu("Medium")).setTitleCondensed("Medium");
+        clueSize.add(createSpannableForMenu("Large")).setTitleCondensed("Large");
         Menu zoom = menu.addSubMenu("Zoom");
-        zoom.add("Zoom In");
+        zoom.add(createSpannableForMenu("Zoom In")).setTitleCondensed("Zoom In");
 
         if (RENDERER.getScale() < RENDERER.getDeviceMaxScale())
-            zoom.add("Zoom In Max");
+            zoom.add(createSpannableForMenu("Zoom In Max")).setTitleCondensed("Zoom In Max");
 
-        zoom.add("Zoom Out");
-        zoom.add("Fit to Screen");
-        zoom.add("Zoom Reset");
+        zoom.add(createSpannableForMenu("Zoom Out")).setTitleCondensed("Zoom Out");
+        zoom.add(createSpannableForMenu("Fit to Screen")).setTitleCondensed("Fit to Screen");
+        zoom.add(createSpannableForMenu("Zoom Reset")).setTitleCondensed("Zoom Reset");
         menu.add("Info").setIcon(android.R.drawable.ic_menu_info_details);
         menu.add("Help").setIcon(android.R.drawable.ic_menu_help);
         menu.add("Settings").setIcon(android.R.drawable.ic_menu_preferences);
@@ -707,9 +713,15 @@ public class PlayActivity extends ShortyzActivity {
         return true;
     }
 
+    private SpannableString createSpannableForMenu(String value){
+        SpannableString s = new SpannableString(value);
+        s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.textColorPrimary)), 0, s.length(), 0);
+        return s;
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_ENTER){
+        if (keyCode == KeyEvent.KEYCODE_ENTER) {
             return true;
         }
 
@@ -723,7 +735,6 @@ public class PlayActivity extends ShortyzActivity {
         if ((System.currentTimeMillis() - this.resumedOn) < 500) {
             return true;
         }
-        System.out.println("Key Code "+keyCode +" vs "+KeyEvent.KEYCODE_DPAD_UP);
         switch (keyCode) {
             case KeyEvent.KEYCODE_SEARCH:
                 System.out.println("Next clue.");
@@ -857,28 +868,28 @@ public class PlayActivity extends ShortyzActivity {
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean onOptionsItemSelected (MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {
         System.out.println(item.getTitle());
-        if(item.getTitle() == null){
+        if (item.getTitle() == null) {
             finish();
             return true;
         }
-        if (item.getTitle().equals("Letter")) {
+        if (item.getTitle().toString().equals("Letter")) {
             BOARD.revealLetter();
             this.render();
 
             return true;
-        } else if (item.getTitle().equals("Word")) {
+        } else if (item.getTitle().toString().equals("Word")) {
             BOARD.revealWord();
             this.render();
 
             return true;
-        } else if (item.getTitle().equals("Puzzle")) {
+        } else if (item.getTitle().toString().equals("Puzzle")) {
             this.showDialog(REVEAL_PUZZLE_DIALOG);
 
             return true;
-        } else if (item.getTitle().equals("Show Errors")
-                || item.getTitle().equals("Hide Errors")) {
+        } else if (item.getTitle().toString().equals("Show Errors")
+                || item.getTitle().toString().equals("Hide Errors")) {
             BOARD.toggleShowErrors();
             item.setTitle(BOARD.isShowErrors() ? "Hide Errors" : "Show Errors");
             this.prefs.edit().putBoolean("showErrors", BOARD.isShowErrors())
@@ -886,12 +897,12 @@ public class PlayActivity extends ShortyzActivity {
             this.render();
 
             return true;
-        } else if (item.getTitle().equals("Settings")) {
+        } else if (item.getTitle().toString().equals("Settings")) {
             Intent i = new Intent(this, PreferencesActivity.class);
             this.startActivity(i);
 
             return true;
-        } else if (item.getTitle().equals("Zoom In")) {
+        } else if (item.getTitle().toString().equals("Zoom In")) {
             this.boardView.scrollTo(0, 0);
 
             float newScale = RENDERER.zoomIn();
@@ -901,7 +912,7 @@ public class PlayActivity extends ShortyzActivity {
             this.render();
 
             return true;
-        } else if (item.getTitle().equals("Zoom In Max")) {
+        } else if (item.getTitle().toString().equals("Zoom In Max")) {
             this.boardView.scrollTo(0, 0);
 
             float newScale = RENDERER.zoomInMax();
@@ -911,7 +922,7 @@ public class PlayActivity extends ShortyzActivity {
             this.render();
 
             return true;
-        } else if (item.getTitle().equals("Zoom Out")) {
+        } else if (item.getTitle().toString().equals("Zoom Out")) {
             this.boardView.scrollTo(0, 0);
 
             float newScale = RENDERER.zoomOut();
@@ -921,7 +932,7 @@ public class PlayActivity extends ShortyzActivity {
             this.render();
 
             return true;
-        } else if (item.getTitle().equals("Fit to Screen")) {
+        } else if (item.getTitle().toString().equals("Fit to Screen")) {
             this.boardView.scrollTo(0, 0);
 
             int v = (this.boardView.getWidth() < this.boardView.getHeight()) ? this.boardView
@@ -932,7 +943,7 @@ public class PlayActivity extends ShortyzActivity {
             this.render();
 
             return true;
-        } else if (item.getTitle().equals("Zoom Reset")) {
+        } else if (item.getTitle().toString().equals("Zoom Reset")) {
             float newScale = RENDERER.zoomReset();
             boardView.setCurrentScale(newScale);
             this.prefs.edit().putFloat("scale", newScale).commit();
@@ -940,7 +951,7 @@ public class PlayActivity extends ShortyzActivity {
             this.boardView.scrollTo(0, 0);
 
             return true;
-        } else if (item.getTitle().equals("Info")) {
+        } else if (item.getTitle().toString().equals("Info")) {
             if (dialog != null) {
                 TextView view = (TextView) dialog
                         .findViewById(R.id.puzzle_info_time);
@@ -958,27 +969,28 @@ public class PlayActivity extends ShortyzActivity {
             this.showDialog(INFO_DIALOG);
 
             return true;
-        } else if (item.getTitle().equals("Clues")) {
+        } else if (item.getTitle().toString().equals("Clues")) {
             Intent i = new Intent(PlayActivity.this, ClueListActivity.class);
             i.setData(Uri.fromFile(baseFile));
             PlayActivity.this.startActivityForResult(i, 0);
 
             return true;
-        } else if (item.getTitle().equals("Help")) {
+        } else if (item.getTitle().toString().equals("Help")) {
             Intent i = new Intent(Intent.ACTION_VIEW,
                     Uri.parse("file:///android_asset/playscreen.html"), this,
                     HTMLActivity.class);
             this.startActivity(i);
-        } else if (item.getTitle().equals("Small")) {
+        } else if (item.getTitle().toString().equals("Small")) {
             this.setClueSize(12);
-        } else if (item.getTitle().equals("Medium")) {
+        } else if (item.getTitle().toString().equals("Medium")) {
             this.setClueSize(14);
-        } else if (item.getTitle().equals("Large")) {
+        } else if (item.getTitle().toString().equals("Large")) {
             this.setClueSize(16);
         }
 
         return false;
     }
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         this.render();
@@ -1109,8 +1121,6 @@ public class PlayActivity extends ShortyzActivity {
         } else {
             String stratName = this.prefs.getString("movementStrategy",
                     "MOVE_NEXT_ON_AXIS");
-            System.out.println("Movement Strategy:" + stratName);
-
             if (stratName.equals("MOVE_NEXT_ON_AXIS")) {
                 movement = MovementStrategy.MOVE_NEXT_ON_AXIS;
             } else if (stratName.equals("STOP_ON_END")) {
@@ -1196,7 +1206,7 @@ public class PlayActivity extends ShortyzActivity {
 
         this.boardView.setBitmap(RENDERER.draw(previous), rescale);
         this.boardView.requestFocus();
-		/*
+        /*
 		 * If we jumped to a new word, ensure the first letter is visible.
 		 * Otherwise, insure that the current letter is visible. Only necessary
 		 * if the cursor is currently off screen.
@@ -1234,9 +1244,7 @@ public class PlayActivity extends ShortyzActivity {
             }
 
             // ensure the cursor is always on the screen.
-            //System.out.println("Bottom Right" + cursorBottomRight);
             this.boardView.ensureVisible(cursorBottomRight);
-            //System.out.println("Top Left"+cursorTopLeft);
             this.boardView.ensureVisible(cursorTopLeft);
 
         }
@@ -1317,4 +1325,6 @@ public class PlayActivity extends ShortyzActivity {
         }
         this.boardView.requestFocus();
     }
+
+
 }

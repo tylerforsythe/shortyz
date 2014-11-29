@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<com.andexert.library.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.totsp.crossword.view.DelegatingRippleView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/more"
     android:layout_width="fill_parent"
     android:layout_height="72dp"
     android:layout_margin="0dp"
     app:rv_rippleDuration="250"
-    app:rv_color="@color/primary_dark">
+    app:rv_color="@color/primary_dark"
+    android:background="@color/background_material_light"
+    android:longClickable="true">
 
     <RelativeLayout
-
         android:layout_width="fill_parent"
         android:layout_height="72dp"
-        android:background="#f2f2f2"
         android:paddingBottom="8dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
@@ -30,14 +30,14 @@
             android:paddingLeft="10dp"
             android:text="Wed
 Jan 2, 2001"
-            android:textSize="10dp" />
+            android:textSize="10dp"
+            android:textColor="@color/textColorSecondary"/>
 
         <com.totsp.crossword.view.CircleProgressBar
             android:id="@+id/puzzle_progress"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:layout_alignParentTop="true"
-            android:layout_marginRight="8dp"
             android:layout_toRightOf="@id/puzzle_date" />
 
 
@@ -80,4 +80,4 @@ Jan 2, 2001"
 
 
     </RelativeLayout>
-</com.andexert.library.RippleView>
+    </com.totsp.crossword.view.DelegatingRippleView>

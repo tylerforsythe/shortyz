@@ -93,29 +93,30 @@ public class CircleProgressBar extends View {
         if (this.percentComplete < 0) {
             paint.setColor(RED);
             paint.setStrokeWidth(circleStroke);
-            canvas.drawCircle(halfWidth, halfHeight, halfWidth - halfStroke - metrics.density * 2f, paint);
+            canvas.drawCircle(halfWidth, halfWidth, halfWidth - halfStroke - metrics.density * 2f, paint);
             paint.setStyle(Paint.Style.FILL);
-            canvas.drawText("?", halfWidth, halfHeight + textSize / 3f, paint);
+            canvas.drawText("?", halfWidth, halfWidth + textSize / 3f, paint);
         } else if (this.percentComplete == 0) {
 //            paint.setStrokeWidth(circleFine);
 //            canvas.drawCircle(halfWidth, halfHeight, halfWidth - metrics.density * 4f, paint);
             paint.setTypeface(icons4);
             paint.setStyle(Paint.Style.FILL);
-            canvas.drawText("W", halfWidth, halfHeight + textSize / 2.5f, paint);
+            canvas.drawText("W", halfWidth, halfWidth + textSize / 2.5f, paint);
         } else if (this.percentComplete == 100) {
             paint.setColor(GREEN);
             paint.setStrokeWidth(circleStroke);
-            canvas.drawCircle(halfWidth, halfHeight, halfWidth - halfStroke - metrics.density * 2f, paint);
+            canvas.drawCircle(halfWidth, halfWidth, halfWidth - halfStroke - metrics.density * 2f, paint);
             paint.setTypeface(icons1);
             paint.setStyle(Paint.Style.FILL);
             canvas.drawText("4", halfWidth, halfHeight + textSize / 2f, paint);
         } else {
             paint.setColor(ORANGE);
             paint.setStrokeWidth(circleFine);
-            canvas.drawCircle(halfWidth, halfHeight, halfWidth - halfStroke - 1f, paint);
+            canvas.drawCircle(halfWidth, halfWidth, halfWidth - halfStroke - 1f, paint);
             paint.setStrokeWidth(circleStroke);
-            RectF rect = new RectF(0 + circleStroke + metrics.density * 1f ,0 + circleStroke + metrics.density * 1f,
-                    width - circleStroke - metrics.density * 1f, height - circleStroke - metrics.density * 1f);
+
+            RectF rect = new RectF(0 + circleStroke ,0 + circleStroke ,
+                    width - circleStroke , width - circleStroke);
             canvas.drawArc(rect, -90,  360F * percentComplete / 100F, false, paint);
             paint.setStyle(Paint.Style.FILL);
             textSize = halfWidth * 0.5f;

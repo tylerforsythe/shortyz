@@ -34,13 +34,16 @@
                 android:layout_width="350dp"
                 android:layout_height="fill_parent"
                 android:background="@color/primary_material_light"
+                android:divider="@null"
+                android:dividerHeight="0dp"
                 android:cacheColorHint="@color/textColorSecondary" />
 
 
             <ListView
                 android:id="@+id/puzzleList"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent" />
+                android:layout_height="fill_parent"
+                android:background="@color/primary_material_light"/>
 
 
         </LinearLayout>

@@ -15,7 +15,7 @@ import com.totsp.crossword.shortyz.R;
 public class SeparatedListAdapter extends BaseAdapter {
     private static final int TYPE_SECTION_HEADER = 0;
     private final ArrayAdapter<String> headers;
-    public final ArrayList<Adapter> sections = new ArrayList<Adapter>();
+    public ArrayList<ArrayAdapter> sections = new ArrayList<ArrayAdapter>();
 
     public SeparatedListAdapter(Context context) {
         headers = new ArrayAdapter<String>(context, R.layout.puzzle_list_header);
@@ -29,6 +29,39 @@ public class SeparatedListAdapter extends BaseAdapter {
             total += (adapter.getCount() + 1);
 
         return total;
+    }
+
+    public void remove(int position){
+        int section = 0;
+
+
+        for (ArrayAdapter adapter : this.sections) {
+            int size = adapter.getCount() + 1;
+
+            // check if position inside this section
+            if (position == 0) {
+                String o = headers.getItem(section);
+                headers.remove(o);
+                return;
+            }
+
+            if (position < size) {
+                Object o =  adapter.getItem(position -1);
+                System.out.println("Removing "+o );
+                adapter.remove(o);
+                if(adapter.getCount() == 0){
+                    String header = headers.getItem(section);
+                    headers.remove(header);
+                    this.sections = new ArrayList<>(this.sections);
+                    this.sections.remove(section);
+                }
+                return;
+            }
+
+            // otherwise jump into next section
+            position -= size;
+            section++;
+        }
     }
 
     public boolean isEnabled(int position) {
@@ -116,7 +149,7 @@ public class SeparatedListAdapter extends BaseAdapter {
         return 2;
     }
 
-    public void addSection(String section, Adapter adapter) {
+    public void addSection(String section, ArrayAdapter adapter) {
         this.headers.add(section);
         this.sections.add(adapter);
     }

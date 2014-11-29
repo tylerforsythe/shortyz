@@ -41,4 +41,12 @@
        <item>PORT</item>
        <item>LAND</item>
      </string-array>
+    <string-array name="swipeActionLabels">
+        <item>Delete</item>
+        <item>Archive</item>
+    </string-array>
+    <string-array name="swipeActionValues">
+        <item>DELETE</item>
+        <item>ARCHIVE</item>
+    </string-array>
 </resources>

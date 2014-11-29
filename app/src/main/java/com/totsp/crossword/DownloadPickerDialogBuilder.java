@@ -40,6 +40,7 @@ public class DownloadPickerDialogBuilder {
     private List<Downloader> mAvailableDownloaders;
     private OnDateChangedListener dateChangedListener = new DatePicker.OnDateChangedListener() {
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                System.out.println("OnDateChanged "+year+" "+monthOfYear+" "+dayOfMonth);
                 mYear = year;
                 mMonthOfYear = monthOfYear;
                 mDayOfMonth = dayOfMonth;
@@ -67,7 +68,7 @@ public class DownloadPickerDialogBuilder {
         View layout = inflater.inflate(R.layout.download_dialog, (ViewGroup) mActivity.findViewById(R.id.download_root));
 
 
-        DatePicker datePicker = (DatePicker) layout.findViewById(R.id.datePicker);
+        final DatePicker datePicker = (DatePicker) layout.findViewById(R.id.datePicker);
         datePicker.init(year, monthOfYear, dayOfMonth, dateChangedListener);
 
         mPuzzleSelect = (Spinner) layout.findViewById(R.id.puzzleSelect);
@@ -75,6 +76,7 @@ public class DownloadPickerDialogBuilder {
 
         OnClickListener clickHandler = new OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
+                    dateChangedListener.onDateChanged(datePicker, datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
                     downloadButtonListener.onDownloadSelected(getCurrentDate(), mAvailableDownloaders,
                         mPuzzleSelect.getSelectedItemPosition());
                 }
@@ -88,7 +90,7 @@ public class DownloadPickerDialogBuilder {
                 }
             });
 
-        AlertDialog.Builder builder = (new AlertDialog.Builder(new ContextThemeWrapper(mActivity, R.style.Theme_Shortyz))).setPositiveButton("Download", clickHandler)
+        AlertDialog.Builder builder = (new AlertDialog.Builder(new ContextThemeWrapper(mActivity, R.style.Base_Theme_AppCompat_Light_Dialog))).setPositiveButton("Download", clickHandler)
                                        .setNegativeButton("Cancel", null);
 
         builder.setView(layout);

@@ -185,7 +185,6 @@ public class ScrollingImageView extends FrameLayout implements OnGestureListener
     }
 
     public void onLongPress(MotionEvent e) {
-        System.out.println("Long press!");
         if ((aux != null) && aux.inProgress()) {
             return;
         }
@@ -326,9 +325,7 @@ public class ScrollingImageView extends FrameLayout implements OnGestureListener
         if ((runningScale * scale) > maxScale) {
             scale = 1.0F;
         }
-        System.out.println("CURRENT "+
-        		currentScale);
-        
+
         if(scale * this.currentScale > 2.5 ){
         	return;
         } 

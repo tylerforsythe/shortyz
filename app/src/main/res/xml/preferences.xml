@@ -317,8 +317,23 @@
 		android:summary="Play screens run full screen."
 		android:key="fullScreen"
 	/-->
-	
- </PreferenceCategory>
+
+    <CheckBoxPreference
+        android:title="Disable Swipe"
+        android:defaultValue="false"
+        android:summary="Disables swiping to dismiss on the list view. (Requires Restart)"
+        android:key="disableSwipe"
+        />
+
+    <ListPreference
+        android:title="Swipe Action"
+        android:summary="Select delete or archive on swipe"
+        android:key="swipeAction"
+        android:defaultValue="DELETE"
+        android:entries="@array/swipeActionLabels"
+        android:entryValues="@array/swipeActionValues" />
+
+</PreferenceCategory>
 	
 	<PreferenceCategory
 		android:title="About Shortyz">

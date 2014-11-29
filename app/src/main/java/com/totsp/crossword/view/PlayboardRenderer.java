@@ -111,7 +111,6 @@ public class PlayboardRenderer {
     }
 
     public void setScale(float scale) {
-        System.out.println("SET SCALE "+scale);
         if (scale > getDeviceMaxScale()) {
             scale = getDeviceMaxScale();
         } else if (scale < getDeviceMinScale()) {
@@ -119,7 +118,6 @@ public class PlayboardRenderer {
         } else if (("" + scale).equals("NaN")) {
             scale = 1.0f * this.logicalDensity;
         }
-        System.out.println("Scale at: "+scale);
         this.bitmap = null;
         this.scale = scale;
     }
@@ -239,7 +237,6 @@ public class PlayboardRenderer {
             newScale = getDeviceMinScale();
         }
         this.scale = (float) newScale;
-        System.out.println("Scale at "+this.scale+" for short dimension "+shortDimension);
         return this.scale;
     }
 

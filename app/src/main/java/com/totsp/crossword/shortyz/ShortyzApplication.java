@@ -32,12 +32,10 @@ public class ShortyzApplication extends Application {
 				.getExternalStorageState())) {
 			IO.TEMP_FOLDER = new File(CROSSWORDS, "temp");
 			if(!IO.TEMP_FOLDER.mkdirs()){
-				System.out.println("temp folder failed.");
 				return;
 			}
 			DEBUG_DIR = new File(CROSSWORDS, "debug");
 			if(!DEBUG_DIR.mkdirs()){
-				System.out.println("debug folder failed");
 				return;
 			}
 			File info = new File(DEBUG_DIR, "device");
@@ -127,7 +125,6 @@ public class ShortyzApplication extends Application {
             double x = Math.pow(metrics.widthPixels / metrics.xdpi, 2);
             double y = Math.pow(metrics.heightPixels / metrics.ydpi, 2);
             double screenInches = Math.sqrt(x + y);
-            System.out.println("SCREEN SIZE: " + (screenInches));
             if (screenInches > 9) { // look for a 9" or larger screen.
                 return true;
             } else {
@@ -149,7 +146,6 @@ public class ShortyzApplication extends Application {
 			double x = Math.pow(metrics.widthPixels/metrics.xdpi,2);
 		    double y = Math.pow(metrics.heightPixels/metrics.ydpi,2);
 		    double screenInches = Math.sqrt(x+y);
-			System.out.println("SCREEN SIZE: "+(screenInches));
 			if (screenInches > 5.5 && screenInches <= 9) {
 				return true;
 			} else {

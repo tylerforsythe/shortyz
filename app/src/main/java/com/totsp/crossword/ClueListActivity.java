@@ -12,6 +12,7 @@ import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -65,7 +66,17 @@ public class ClueListActivity extends ShortyzActivity {
 		}
 	}
 
-	@Override
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item == null){
+            finish();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		utils.holographic(this);
@@ -78,6 +89,9 @@ public class ClueListActivity extends ShortyzActivity {
 					Toast.LENGTH_LONG).show();
 			finish();
 		}
+        if(ShortyzApplication.BOARD == null || ShortyzApplication.BOARD.getPuzzle() == null){
+            finish();
+        }
 		this.timer = new ImaginaryTimer(ShortyzApplication.BOARD.getPuzzle()
 				.getTime());
 
